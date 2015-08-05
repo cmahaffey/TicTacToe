@@ -1,6 +1,4 @@
 #TicTacToe
-
-
 ##User Story
 
 - As a player I want to be able to click on a board to play a game of TicTacToe.
