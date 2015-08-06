@@ -10,6 +10,8 @@ function Board(size){
     }
   }
   this.moves=0
+  this.xplays=true
+  this.oplays=false
 }
 //ToDo: board setup
 Board.prototype.render = function render(){
@@ -22,7 +24,12 @@ Board.prototype.render = function render(){
       square=$('<div>').addClass('square');
       index=[rows,squares]
       square.text(this.board[rows][squares]);
-      this.player1Input(square,index);
+      if (this.xplays){
+        this.player1Input(square,index);
+      }else if (this.oplays) {
+        this.player2Input(square,index);
+      }
+
       //add classes for top, bottom, borders
       if (rows%3===0){
         square.addClass('top');
@@ -62,7 +69,8 @@ Board.prototype.player1Input=function playerInput(square, index){
     console.log(scope);
     scope.getWin();
   });
-
+  this.xplays=false;
+  this.oplays=true;
 }
 Board.prototype.player2Input=function playerInput(square, index){
   var scope=this
@@ -73,9 +81,11 @@ Board.prototype.player2Input=function playerInput(square, index){
     console.log(scope);
     scope.getWin();
   });
-
+  this.oplays=false;
+  this.xplays=true;
 }
 //Test statment, flip through sides X and O
+
 
 //get a win
 Board.prototype.getWin = function getWin(){
