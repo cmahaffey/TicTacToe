@@ -19,6 +19,7 @@ function Board(size){
 //ToDo: board setup
 Board.prototype.render = function render(){
   $('.players').remove();
+  $('.winrar').remove();
   var row;
   var square;
   for (var rows=0;rows<this.board.length;rows++){
@@ -27,6 +28,9 @@ Board.prototype.render = function render(){
       square=$('<div>').addClass('square');
       index=[rows,squares]
       square.text(this.board[rows][squares]);
+      this.player1Input(square,index);
+      this.player2Input(square,index);
+      //DOESN'T WORK ON ROWS
       if (this.xplays){
         this.player1Input(square,index);
       }else if (this.oplays) {
@@ -99,13 +103,13 @@ Board.prototype.getWin = function getWin(){
   for (var i=0;i<this.board.length;i++){
 
     if((this.board[i][0]==='X')&&(this.board[i][1]==='X')&&(this.board[i][2]==='X')){
-      console.log('x wins 1')
+      this.winMessage('X')
     }else if ((this.board[0][i]==='X')&&(this.board[1][i]==='X')&&(this.board[2][i]==='X')) {
-      console.log('x wins 2')
+      this.winMessage('X')
     }else if ((this.board[0][0]==='X')&&(this.board[1][1]==='X')&&(this.board[2][2]==='X')) {
-      console.log('x wins 3')
+      this.winMessage('X')
     }else if ((this.board[0][2]==='X')&&(this.board[1][1]==='X')&&(this.board[2][0]==='X')) {
-      console.log('x wins 4')
+      this.winMessage('X')
     }else if((this.board[i][0]==='O')&&(this.board[i][1]==='O')&&(this.board[i][2]==='O')){
       console.log('o wins 1')
     }else if ((this.board[0][i]==='O')&&(this.board[1][i]==='O')&&(this.board[2][i]==='O')) {
@@ -136,10 +140,40 @@ Board.prototype.numPlayers= function numPlayers(){
   })
   this.game.append(onePlayer);
   this.game.append(twoPlayer);
-  $('body').append(this.game)
+  $('#container').append(this.game)
 }
 
 //set name
+Board.prototype.playerNames=function playerNames(num){
+
+  // <div class="player first">
+  //   <h2>Player 1</h2>
+  //   </h4>Wins: 0</h4>
+  // </div>
+  // <div class="player second">
+  //   <h2>Player 2</h2>
+  //   </h4>Wins: 0</h4>
+  // </div>
+}
+
+//
+Board.prototype.winMessage= function winMessage(winner){
+
+  $('.board-row').remove();//
+  announcement=$('<h3>').addClass('winrar');
+  announcement.text(winner+' wins!');
+  reset=$('<button>').addClass('winrar');
+  reset.text('Play again?');
+  scope=this
+  reset.on('click',function(){
+    //returns the previously won game, needs to be reset
+    scope.render();
+  });
+  //adds twice for some reason
+  this.game.append(announcement);
+  this.game.append(reset);
+  //$('#container').append(this.game);
+}
 
 //comp ai
 
