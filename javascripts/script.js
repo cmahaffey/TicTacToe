@@ -64,7 +64,18 @@ Board.prototype.player1Input=function playerInput(square, index){
   });
 
 }
+Board.prototype.player2Input=function playerInput(square, index){
+  var scope=this
+  square.on('click',function(){
+    square.text('O');
+    scope.board[index[0]][index[1]]='O'
+    console.log(scope.board[index[0]][index[1]])
+    console.log(scope);
+    scope.getWin();
+  });
 
+}
+//Test statment, flip through sides X and O
 
 //get a win
 Board.prototype.getWin = function getWin(){
