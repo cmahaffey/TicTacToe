@@ -22,20 +22,26 @@ Board.prototype.render = function render(){
   $('.winrar').remove();
   var row;
   var square;
+  var scope = this;
   for (var rows=0;rows<this.board.length;rows++){
+
+
+
     row=$('<div>').addClass('board-row');
     for (var squares=0;squares<this.board.length;squares++){
+
+
       square=$('<div>').addClass('square');
-      index=[rows,squares]
+      square.attr({
+        col: squares,
+        row: rows
+      });
+      // index=[rows,squares]
       square.text(this.board[rows][squares]);
-      this.player1Input(square,index);
-      this.player2Input(square,index);
+
       //DOESN'T WORK ON ROWS
-      if (this.xplays){
-        this.player1Input(square,index);
-      }else if (this.oplays) {
-        this.player2Input(square,index);
-      }
+      console.log(this.xplays)
+
 
       //add classes for top, bottom, borders
       if (rows%3===0){
@@ -62,34 +68,61 @@ Board.prototype.render = function render(){
     }
     this.game.append(row)
   }
-  $('#container').append(this.game)
+  $('#container').append(this.game);
 
+  $('.square').on('click', function(e) {
+
+    console.log('hi');
+
+    var square = $(e.target);
+    var index = [
+      square.attr('row'),
+      square.attr('col')
+    ];
+
+    if (scope.xplays){
+      scope.player1Input(square, index);
+    }else if (scope.oplays) {
+      scope.player2Input(square, index);
+    }
+  });
+
+
+
+  // if (this.xplays){
+  //   this.player1Input(square,index);
+  // }else if (this.oplays) {
+  //   this.player2Input(square,index);
+  // }
 }
 
 //Test: get an input-needs board set up
-Board.prototype.player1Input=function playerInput(square, index){
-  var scope=this
-  square.on('click',function(){
+Board.prototype.player1Input= function player1Input(square, index){
+
+  console.log(index);
+  var scope=this;
+  // square.on('click',function(){
     square.text('X');
     scope.board[index[0]][index[1]]='X'
-    console.log(scope.board[index[0]][index[1]])
-    console.log(scope);
+    // console.log(scope.board[index[0]][index[1]])
+    // console.log(scope);
     scope.getWin();
-  });
+  // });
   // Flip through sides X and O
   this.xplays=false;
   this.oplays=true;
   this.moves++;
 }
-Board.prototype.player2Input=function playerInput(square, index){
-  var scope=this
-  square.on('click',function(){
+Board.prototype.player2Input=function player2Input(square, index){
+  var scope=this;
+  console.log(index);
+  // square.on('click',function(){
     square.text('O');
     scope.board[index[0]][index[1]]='O'
-    console.log(scope.board[index[0]][index[1]])
-    console.log(scope);
+    // console.log(scope.board[index[0]][index[1]])
+    // console.log(scope);
     scope.getWin();
-  });
+  // });
   // Flip through sides X and O
   this.oplays=false;
   this.xplays=true;
@@ -103,21 +136,21 @@ Board.prototype.getWin = function getWin(){
   for (var i=0;i<this.board.length;i++){
 
     if((this.board[i][0]==='X')&&(this.board[i][1]==='X')&&(this.board[i][2]==='X')){
-      this.winMessage('X')
+      return this.winMessage('X');
     }else if ((this.board[0][i]==='X')&&(this.board[1][i]==='X')&&(this.board[2][i]==='X')) {
-      this.winMessage('X')
+      return this.winMessage('X');
     }else if ((this.board[0][0]==='X')&&(this.board[1][1]==='X')&&(this.board[2][2]==='X')) {
-      this.winMessage('X')
+      return this.winMessage('X');
     }else if ((this.board[0][2]==='X')&&(this.board[1][1]==='X')&&(this.board[2][0]==='X')) {
-      this.winMessage('X')
+      return this.winMessage('X');
     }else if((this.board[i][0]==='O')&&(this.board[i][1]==='O')&&(this.board[i][2]==='O')){
-      console.log('o wins 1')
+      return this.winMessage('O');
     }else if ((this.board[0][i]==='O')&&(this.board[1][i]==='O')&&(this.board[2][i]==='O')) {
-      console.log(i)
+      return this.winMessage('O');
     }else if ((this.board[0][0]==='O')&&(this.board[1][1]==='O')&&(this.board[2][2]==='O')) {
-      console.log('o wins 3')
+      return this.winMessage('O');
     }else if ((this.board[0][2]==='O')&&(this.board[1][1]==='O')&&(this.board[2][0]==='O')) {
-      console.log('o wins 4')
+      return this.winMessage('O');
     }else if (this.moves>7){
       console.log('it\'s a tie')
     }
@@ -184,6 +217,6 @@ $(document).ready(function(){
   var box = new Board(3)
   box.numPlayers()
   //box.playerInput()
-  //box=[['R','R','R'],['R','R','R'],['R','E','R']];
+  //box={board:[['R','R','R'],['R','R','R'],['R','R','R']]}
   // getWin(box);
 });
