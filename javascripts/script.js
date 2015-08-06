@@ -9,13 +9,16 @@ function Board(size){
       this.board[i].push(' ');
     }
   }
-  this.moves=0
-  this.xplays=true
-  this.oplays=false
+  this.moves=0;
+  this.xplays=true;
+  this.oplays=false;
+  this.onePlayer=false;
+  this.twoPlayer=false;
+  this.game=$('<div>').addClass('board');
 }
 //ToDo: board setup
 Board.prototype.render = function render(){
-  var game=$('<div>').addClass('board');
+  $('.players').remove();
   var row;
   var square;
   for (var rows=0;rows<this.board.length;rows++){
@@ -53,9 +56,9 @@ Board.prototype.render = function render(){
       }
       row.append(square)
     }
-    game.append(row)
+    this.game.append(row)
   }
-  $('#container').append(game)
+  $('#container').append(this.game)
 
 }
 
@@ -69,8 +72,10 @@ Board.prototype.player1Input=function playerInput(square, index){
     console.log(scope);
     scope.getWin();
   });
+  // Flip through sides X and O
   this.xplays=false;
   this.oplays=true;
+  this.moves++;
 }
 Board.prototype.player2Input=function playerInput(square, index){
   var scope=this
@@ -81,10 +86,12 @@ Board.prototype.player2Input=function playerInput(square, index){
     console.log(scope);
     scope.getWin();
   });
+  // Flip through sides X and O
   this.oplays=false;
   this.xplays=true;
+  this.moves++;
 }
-//Test statment, flip through sides X and O
+
 
 
 //get a win
@@ -118,6 +125,19 @@ Board.prototype.getWin = function getWin(){
 //choosing x or o
 
 //1 or 2 player
+Board.prototype.numPlayers= function numPlayers(){
+  var onePlayer=$('<button>').addClass('players');
+  var twoPlayer=$('<button>').addClass('players');
+  onePlayer.text('1 player');
+  twoPlayer.text('2 player');
+  var scope=this
+  twoPlayer.on('click',function(){
+    scope.render()
+  })
+  this.game.append(onePlayer);
+  this.game.append(twoPlayer);
+  $('body').append(this.game)
+}
 
 //set name
 
@@ -128,7 +148,7 @@ Board.prototype.getWin = function getWin(){
 //window onload, for testing for now
 $(document).ready(function(){
   var box = new Board(3)
-  box.render()
+  box.numPlayers()
   //box.playerInput()
   //box=[['R','R','R'],['R','R','R'],['R','E','R']];
   // getWin(box);
