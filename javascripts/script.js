@@ -1,6 +1,7 @@
 console.log('let\'s play');
 //Test: make a tictactoe board as an array of arrays
-
+var p1wins=0;
+var p2wins=0;
 function Board(size){
   this.board=[];
   for (var i=0;i<size;i++){
@@ -39,9 +40,6 @@ Board.prototype.render = function render(){
       // index=[rows,squares]
       square.text(this.board[rows][squares]);
 
-      //DOESN'T WORK ON ROWS
-      console.log(this.xplays)
-
 
       //add classes for top, bottom, borders
       if (rows%3===0){
@@ -71,9 +69,6 @@ Board.prototype.render = function render(){
   $('#container').append(this.game);
 
   $('.square').on('click', function(e) {
-
-    console.log('hi');
-
     var square = $(e.target);
     var index = [
       square.attr('row'),
@@ -86,47 +81,41 @@ Board.prototype.render = function render(){
       scope.player2Input(square, index);
     }
   });
-
-
-
-  // if (this.xplays){
-  //   this.player1Input(square,index);
-  // }else if (this.oplays) {
-  //   this.player2Input(square,index);
-  // }
 }
 
 //Test: get an input-needs board set up
 Board.prototype.player1Input= function player1Input(square, index){
-
-  console.log(index);
-  var scope=this;
+  if (this.board[index[0]][index[1]]===' '){
+  //var scope=this;
   // square.on('click',function(){
     square.text('X');
-    scope.board[index[0]][index[1]]='X'
+    this.board[index[0]][index[1]]='X'
     // console.log(scope.board[index[0]][index[1]])
     // console.log(scope);
-    scope.getWin();
+    this.getWin();
   // });
   // Flip through sides X and O
-  this.xplays=false;
-  this.oplays=true;
-  this.moves++;
+    this.xplays=false;
+    this.oplays=true;
+    this.moves++;
+  }
 }
 Board.prototype.player2Input=function player2Input(square, index){
-  var scope=this;
-  console.log(index);
+  if (this.board[index[0]][index[1]]===' '){
+  //var scope=this;
+  // console.log(index);
   // square.on('click',function(){
     square.text('O');
-    scope.board[index[0]][index[1]]='O'
+    this.board[index[0]][index[1]]='O'
     // console.log(scope.board[index[0]][index[1]])
     // console.log(scope);
-    scope.getWin();
+    this.getWin();
   // });
   // Flip through sides X and O
-  this.oplays=false;
-  this.xplays=true;
-  this.moves++;
+    this.oplays=false;
+    this.xplays=true;
+    this.moves++;
+  }
 }
 
 
@@ -134,22 +123,30 @@ Board.prototype.player2Input=function player2Input(square, index){
 //get a win
 Board.prototype.getWin = function getWin(){
   for (var i=0;i<this.board.length;i++){
-
+    console.log(this.moves)
     if((this.board[i][0]==='X')&&(this.board[i][1]==='X')&&(this.board[i][2]==='X')){
+      this.xwins++;
       return this.winMessage('X');
     }else if ((this.board[0][i]==='X')&&(this.board[1][i]==='X')&&(this.board[2][i]==='X')) {
+      this.xwins++;
       return this.winMessage('X');
     }else if ((this.board[0][0]==='X')&&(this.board[1][1]==='X')&&(this.board[2][2]==='X')) {
+      this.xwins++;
       return this.winMessage('X');
     }else if ((this.board[0][2]==='X')&&(this.board[1][1]==='X')&&(this.board[2][0]==='X')) {
+      this.xwins++;
       return this.winMessage('X');
     }else if((this.board[i][0]==='O')&&(this.board[i][1]==='O')&&(this.board[i][2]==='O')){
+      this.owins++;
       return this.winMessage('O');
     }else if ((this.board[0][i]==='O')&&(this.board[1][i]==='O')&&(this.board[2][i]==='O')) {
+      this.owins++;
       return this.winMessage('O');
     }else if ((this.board[0][0]==='O')&&(this.board[1][1]==='O')&&(this.board[2][2]==='O')) {
+      this.owins++;
       return this.winMessage('O');
     }else if ((this.board[0][2]==='O')&&(this.board[1][1]==='O')&&(this.board[2][0]==='O')) {
+      this.owins++;
       return this.winMessage('O');
     }else if (this.moves>7){
       console.log('it\'s a tie')
@@ -177,23 +174,64 @@ Board.prototype.numPlayers= function numPlayers(){
 }
 
 //set name
-Board.prototype.playerNames=function playerNames(num){
+Board.prototype.playerNames=function playerNames(){
+  firstPlayer=$('<div>').addClass('player first');
+  secondPlayer=$('<div>').addClass('player second');
+  firstName=$('<h2>');
+  firstName.text('____________');
+  firstScore=$('<h4>');
+  firstScore.text('Wins: 0');
+  secondName=$('<h2>');
+  secondName.text('Computer');
+  secondScore=$('<h4>');
+  secondScore.text('Wins: 0');
+  firstPlayer.append(firstName);
+  firstPlayer.append(firstScore);
+  secondPlayer.append(secondName);
+  secondPlayer.append(secondScore);
+  $('#container').append(firstPlayer);
+  $('#container').append(secondPlayer)
+}
+//allows player to insert a name
+Board.prototype.insertName=function insertName(num){
+  $('.players').remove();
+  var input=$('<input>').addClass('name');
+  var submit=$('<button>').addClass('name');
+  submit.text('submit');
+  var nameRequest=$('<p>').addClass('name');
+  var centering=$('<center>')
+  if (num===1){
+    nameRequest.text("Please put in the player's name");
+    submit.on('click',function(){
+      $('.first h2').text(input.val())
+    });}
+  // }else if (num===2) {
+  //   for (var i=1;i<=num;i++){
+  //     console.log(i)
+  //     nameRequest.text("Please put in the player "+i+"'s name");
+  //     submit.on('click',function(){
+  //       if (i===1){
+  //         $('.first h2').text(input.val())
+  //       }else if (i===3) {
+  //       $('.second h2').text(input.val())
+  //       }
+  //     });
+  //   }
+  }
+  centering.append(nameRequest);
+  centering.append(input);
+  centering.append(submit);
+  this.game.append(centering);
+  $('#container').append(this.game);
 
-  // <div class="player first">
-  //   <h2>Player 1</h2>
-  //   </h4>Wins: 0</h4>
-  // </div>
-  // <div class="player second">
-  //   <h2>Player 2</h2>
-  //   </h4>Wins: 0</h4>
-  // </div>
 }
 
-//
+//changes the screen to announce who won
 Board.prototype.winMessage= function winMessage(winner){
 
   $('.board-row').remove();//
   announcement=$('<h3>').addClass('winrar');
+  //add an if for the tie eventuality
   announcement.text(winner+' wins!');
   reset=$('<button>').addClass('winrar');
   reset.text('Play again?');
@@ -215,7 +253,9 @@ Board.prototype.winMessage= function winMessage(winner){
 //window onload, for testing for now
 $(document).ready(function(){
   var box = new Board(3)
-  box.numPlayers()
+  //box.numPlayers()
+  box.playerNames()
+  box.insertName(2)
   //box.playerInput()
   //box={board:[['R','R','R'],['R','R','R'],['R','R','R']]}
   // getWin(box);

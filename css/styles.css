@@ -71,3 +71,10 @@ body{
   margin:5%;
   font-size: 20px;
 }
+.name{
+  display: block;
+  font-size: 18px;
+  padding: 1px;
+  margin: 5px;
+  position: relative;
+}
