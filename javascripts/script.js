@@ -6,7 +6,7 @@ function Board(size){
   for (var i=0;i<size;i++){
     this.board.push([]);
     for(var j=0;j<size;j++){
-      this.board[i].push('R');
+      this.board[i].push(' ');
     }
   }
 }
@@ -20,26 +20,27 @@ Board.prototype.render = function render(){
     for (var squares=0;squares<this.board.length;squares++){
       square=$('<div>').addClass('square');
       square.text(this.board[rows][squares]);
+      this.playerInput(square);
       //add classes for top, bottom, borders
       if (rows%3===0){
         square.addClass('top');
-        this.playerInput()
+
       }else if (rows%3===1){
         square.addClass('center');
-        this.playerInput()
+
       }else if (rows%3===2){
         square.addClass('bottom');
-        this.playerInput()
+
       }
       if (squares%3===0){
         square.addClass('left');
-        this.playerInput()
+
       }else if (squares%3===1){
         square.addClass('middle');
-        this.playerInput()
+
       }else if (squares%3===2){
         square.addClass('right');
-        this.playerInput()
+
       }
       row.append(square)
     }
@@ -50,11 +51,12 @@ Board.prototype.render = function render(){
 }
 
 //Test: get an input-needs board set up
-Board.prototype.playerInput=function playerInput(){
+Board.prototype.playerInput=function playerInput(square){
   var scope=this;
-  console.log (this)
-  $('body').on('click','.square',function(){
-    scope.text('X');
+  console.log(this)
+  console.log(square)
+  square.on('click',function(){
+    square.text('X');
   });
 }
 
@@ -85,86 +87,6 @@ Board.prototype.getWin = function getWin(){
   }
 }
 
-// getWin=function(box){
-//     var xwinrow=0;
-//     var owinrow=0;
-//     var xwincol=0;
-//     var owincol=0;
-//     var xwindiag1=0;
-//     var owindiag1=0;
-//     var xwindiag2=0;
-//     var owindiag2=0;
-//     var xwins=false;
-//     var owins=false;
-//     var tie=true;
-//     for (var i=0;i<box.length;i++){
-//         for (var j=0;j<box.length;j++){
-//           console.log(i+','+i)
-//           if (box[i][j].toString()==='x'){
-//             xwinrow++;
-//           }else if(box[j][i].toString()==='x'){
-//
-//             xwincol++;
-//           }else if((box[j][j].toString()==='x')){
-//
-//                 xwindiag1++;
-//                 console.log('it\'s an x diag1');
-//           }else if ((box[j][box.length-1-j].toString()==='x')) {
-//             xwindiag2++;
-//             console.log(box.length-1-j)
-//             console.log(j)
-//             console.log('it\'s an x diag2');
-//           }
-//           if (box[i][j].toString()==='o'){
-//             owinrow++;
-//           }else if(box[j][i].toString()==='o'){
-//
-//             owincol++;
-//           }else if((box[i][i].toString()==='o')){
-//
-//                 owindiag1++;
-//                 console.log('it\'s an o diag1');
-//           }else if ((box[i][box.length-1-i].toString()==='o')) {
-//             owindiag2++;
-//             console.log('it\'s an o diag2');
-//           }
-//
-//             // if ((box[i][j].toString()==='x')||(box[j][i].toString()==='x')||
-//             // (box[j][j].toString()==='x')||(box[j][box.length-1-j].toString()==='x')){
-//             //       xwinrow++;
-//             //       xwincol++;
-//             //       xwindiag++;
-//             //       console.log('it\'s an x');
-//             // }else if ((box[i][j].toString()==='o')||(box[j][i].toString()==='o')
-//             // ||(box[j][j].toString()==='o')||(box[j][box.length-1-j].toString()==='o')){
-//             //       console.log('it\'s an o');
-//             //       owinrow++;
-//             //       owincol++;
-//             //       owindiag++;
-//             // }
-//           }
-//           if ((xwinrow===box.length)||(xwincol===box.length)||(xwindiag1===(box.length*3))||(xwindiag2===(box.length*3))){
-//               xwins=true
-//           }
-//           if ((owinrow===box.length)||(owincol===box.length)||(owindiag1===(box.length*3))||(owindiag2===(box.length*3))){
-//               owins=true
-//           }
-//
-//
-//      }
-// if (xwins){
-//   console.log('x wins')
-// }else if (owins){
-//   console.log('o wins')
-// }else{
-//   console.log('it\'s a tie')
-// }
-//
-// }
-//
-
-
-
 //play
 
 //choosing x or o
@@ -181,6 +103,7 @@ Board.prototype.getWin = function getWin(){
 $(document).ready(function(){
   var box = new Board(3)
   box.render()
+  
   //box.playerInput()
   //box=[['R','R','R'],['R','R','R'],['R','E','R']];
   // getWin(box);

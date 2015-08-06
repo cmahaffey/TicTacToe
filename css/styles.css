@@ -28,15 +28,16 @@ body{
 .board-row{
   display: block;
   width:100%;
+  margin:-14px;
 }
 .square{
   display: inline-block;
-  height:20%;
-  width:20%;
+  height:51px;
+  width:51px;
   background-color: blue;
 }
 .top{
-  border-bottom: 1.5px solid black;
+  border-bottom: 3px solid black;
 }
 .center{
   border-top: 1.5px solid black;
