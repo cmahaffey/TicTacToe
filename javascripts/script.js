@@ -11,27 +11,80 @@ function Board(size){
   }
   return this.box;
 }
+//ToDo: board setup
+function render(board){
+  //<div class="game">
+  var game=$('<div>').addClass('board');
+  var row;
+  var square;
+  for (var rows=0;rows</*this.*/board.length;rows++){
+    row=$('<div>').addClass('board-row');
+    for (var squares=0;squares</*this.*/board.length;squares++){
+      square=$('<div>').addClass('square');
+      square.text(board[rows][squares]);
+      row.append(square)
+    }
+    game.append(row)
+  }
+  $('body').append(game)
+    // <div class='board-row'>
+    //   <div class="square top left">
+    //       test
+    //   </div>
+    //   <div class="square top middle">
+    //       test
+    //   </div>
+    //   <div class="square top right">
+    //       test
+    //   </div>
+    // </div>
+    // <div class="board-row">
+    //   <div class="square center left">
+    //       test
+    //   </div>
+    //   <div class="square center middle">
+    //       test
+    //   </div>
+    //   <div class="square center right">
+    //       test
+    //   </div>
+    // </div>
+    // <div class="board-row">
+    //   <div class="square bottom left">
+    //       test
+    //   </div>
+    //   <div class="square bottom middle">
+    //       test
+    //   </div>
+    //   <div class="square bottom right">
+    //       test
+    //   </div>
+    //   <button type="button" name="button" id='restart'>Replay?</button>
+    // </div>
+
+}
+
 //Test: get an input-needs board set up
 
 //get a win
-Board.prototype.getWin=function(board){
-  for (var i=0;i<board.length;i++){
+Board.prototype.getWin=function(){
+  for (var i=0;i<this.board.length;i++){
 
-    if((board[i][0]==='X')&&(board[i][1]==='X')&&(board[i][2]==='X')){
+    if((this.board[i][0]==='X')&&(this.board[i][1]==='X')&&(this.board[i][2]==='X')){
       console.log('x wins 1')
-    }else if ((board[0][i]==='X')&&(board[1][i]==='X')&&(board[2][i]==='X')) {
+    }else if ((this.board[0][i]==='X')&&(this.board[1][i]==='X')&&(this.board[2][i]==='X')) {
       console.log('x wins 2')
-    }else if ((board[0][0]==='X')&&(board[1][1]==='X')&&(board[2][2]==='X')) {
+    }else if ((this.board[0][0]==='X')&&(this.board[1][1]==='X')&&(this.board[2][2]==='X')) {
       console.log('x wins 3')
-    }else if ((board[0][2]==='X')&&(board[1][1]==='X')&&(board[2][0]==='X')) {
+    }else if ((this.board[0][2]==='X')&&(this.board[1][1]==='X')&&(this.board[2][0]==='X')) {
       console.log('x wins 4')
-    }else if((board[i][0]==='O')&&(board[i][1]==='O')&&(board[i][2]==='O')){
+    }else if((this.board[i][0]==='O')&&(this.board[i][1]==='O')&&(this.board[i][2]==='O')){
       console.log('o wins 1')
-    }else if ((board[0][i]==='O')&&(board[1][i]==='O')&&(board[2][i]==='O')) {
+    }else if ((this.board[0][i]==='O')&&(this.board[1][i]==='O')&&(this.board[2][i]==='O')) {
       console.log(i)
-    }else if ((board[0][0]==='O')&&(board[1][1]==='O')&&(board[2][2]==='O')) {
+    }else if ((this.board[0][0]==='O')&&(this.board[1][1]==='O')&&(this.board[2][2]==='O')) {
       console.log('o wins 3')
-    }else if ((board[0][2]==='O')&&(board[1][1]==='O')&&(board[2][0]==='O')) {
+    }else if ((this.board[0][2]==='O')&&(this.board[1][1]==='O')&&(this.board[2][0]==='O')) {
       console.log('o wins 4')
     }else{
       console.log('it\'s a tie')
@@ -116,7 +169,7 @@ Board.prototype.getWin=function(board){
 //
 // }
 //
- // box=[['O',' ','X'],[' ','O','X'],['X',' ','O']];
+ box=[['O',' ','X'],[' ','O','X'],['X',' ','O']];
  // getWin(box);
 
 

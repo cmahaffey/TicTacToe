@@ -16,7 +16,7 @@ body{
   float: right;
   display: inline-block;
 }
-.game{
+.board{
   position: absolute;
   top:4em;
   left:30%;
