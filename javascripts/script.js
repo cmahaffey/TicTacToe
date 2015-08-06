@@ -12,21 +12,36 @@ function Board(size){
   return this.box;
 }
 //ToDo: board setup
-function render(board){
+Board.prototyperender=function(board){
   //<div class="game">
   var game=$('<div>').addClass('board');
   var row;
   var square;
-  for (var rows=0;rows</*this.*/board.length;rows++){
+  for (var rows=0;rows<this.board.length;rows++){
     row=$('<div>').addClass('board-row');
-    for (var squares=0;squares</*this.*/board.length;squares++){
+    for (var squares=0;squares<this.board.length;squares++){
       square=$('<div>').addClass('square');
       square.text(board[rows][squares]);
+      //add classes for top, bottom, borders
+      if (rows%3===0){
+        square.addClass('top');
+      }else if (rows%3===1){
+        square.addClass('center');
+      }else if (rows%3===2){
+        square.addClass('bottom');
+      }
+      if (squares%3===0){
+        square.addClass('left');
+      }else if (squares%3===1){
+        square.addClass('middle');
+      }else if (squares%3===2){
+        square.addClass('right');
+      }
       row.append(square)
     }
     game.append(row)
   }
-  $('body').append(game)
+  $('#container').append(game)
     // <div class='board-row'>
     //   <div class="square top left">
     //       test
@@ -169,8 +184,8 @@ Board.prototype.getWin=function(){
 //
 // }
 //
- box=[['O',' ','X'],[' ','O','X'],['X',' ','O']];
- // getWin(box);
+box=[['O','X','X'],['O','O','X'],['X','E','O']];
+// getWin(box);
 
 
 //play

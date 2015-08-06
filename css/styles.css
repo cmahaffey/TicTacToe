@@ -30,20 +30,20 @@ body{
   width:100%;
 }
 .square{
-  display: inline;
-  height:4em;
+  display: inline-block;
+  height:20%;
   width:20%;
   background-color: blue;
 }
 .top{
-  border-bottom: 3px solid black;
+  border-bottom: 1.5px solid black;
 }
 .center{
-  border-top: 3px solid black;
-  border-bottom: 3px solid black;
+  border-top: 1.5px solid black;
+  border-bottom: 1.5px solid black;
 }
 .bottom{
-  border-top: 3px solid black;
+  border-top: 1.5px solid black;
 }
 .middle{
   border-left: 1.5px solid black;
