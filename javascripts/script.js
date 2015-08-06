@@ -2,18 +2,16 @@ console.log('let\'s play');
 //Test: make a tictactoe board as an array of arrays
 
 function Board(size){
-  this.box=[];
+  this.board=[];
   for (var i=0;i<size;i++){
-    this.box.push([]);
+    this.board.push([]);
     for(var j=0;j<size;j++){
-      this.box[i].push(' ');
+      this.board[i].push('R');
     }
   }
-  return this.box;
 }
 //ToDo: board setup
-Board.prototyperender=function(board){
-  //<div class="game">
+Board.prototype.render = function render(){
   var game=$('<div>').addClass('board');
   var row;
   var square;
@@ -21,68 +19,48 @@ Board.prototyperender=function(board){
     row=$('<div>').addClass('board-row');
     for (var squares=0;squares<this.board.length;squares++){
       square=$('<div>').addClass('square');
-      square.text(board[rows][squares]);
+      square.text(this.board[rows][squares]);
       //add classes for top, bottom, borders
       if (rows%3===0){
         square.addClass('top');
+        this.playerInput()
       }else if (rows%3===1){
         square.addClass('center');
+        this.playerInput()
       }else if (rows%3===2){
         square.addClass('bottom');
+        this.playerInput()
       }
       if (squares%3===0){
         square.addClass('left');
+        this.playerInput()
       }else if (squares%3===1){
         square.addClass('middle');
+        this.playerInput()
       }else if (squares%3===2){
         square.addClass('right');
+        this.playerInput()
       }
       row.append(square)
     }
     game.append(row)
   }
   $('#container').append(game)
-    // <div class='board-row'>
-    //   <div class="square top left">
-    //       test
-    //   </div>
-    //   <div class="square top middle">
-    //       test
-    //   </div>
-    //   <div class="square top right">
-    //       test
-    //   </div>
-    // </div>
-    // <div class="board-row">
-    //   <div class="square center left">
-    //       test
-    //   </div>
-    //   <div class="square center middle">
-    //       test
-    //   </div>
-    //   <div class="square center right">
-    //       test
-    //   </div>
-    // </div>
-    // <div class="board-row">
-    //   <div class="square bottom left">
-    //       test
-    //   </div>
-    //   <div class="square bottom middle">
-    //       test
-    //   </div>
-    //   <div class="square bottom right">
-    //       test
-    //   </div>
-    //   <button type="button" name="button" id='restart'>Replay?</button>
-    // </div>
 
 }
 
 //Test: get an input-needs board set up
+Board.prototype.playerInput=function playerInput(){
+  var scope=this;
+  console.log (this)
+  $('body').on('click','.square',function(){
+    scope.text('X');
+  });
+}
+
 
 //get a win
-Board.prototype.getWin=function(){
+Board.prototype.getWin = function getWin(){
   for (var i=0;i<this.board.length;i++){
 
     if((this.board[i][0]==='X')&&(this.board[i][1]==='X')&&(this.board[i][2]==='X')){
@@ -184,8 +162,7 @@ Board.prototype.getWin=function(){
 //
 // }
 //
-box=[['O','X','X'],['O','O','X'],['X','E','O']];
-// getWin(box);
+
 
 
 //play
@@ -199,3 +176,12 @@ box=[['O','X','X'],['O','O','X'],['X','E','O']];
 //comp ai
 
 //big boards
+
+//window onload, for testing for now
+$(document).ready(function(){
+  var box = new Board(3)
+  box.render()
+  //box.playerInput()
+  //box=[['R','R','R'],['R','R','R'],['R','E','R']];
+  // getWin(box);
+});
