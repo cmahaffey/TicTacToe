@@ -9,6 +9,7 @@ function Board(size){
       this.board[i].push(' ');
     }
   }
+  this.moves=0
 }
 //ToDo: board setup
 Board.prototype.render = function render(){
@@ -19,8 +20,9 @@ Board.prototype.render = function render(){
     row=$('<div>').addClass('board-row');
     for (var squares=0;squares<this.board.length;squares++){
       square=$('<div>').addClass('square');
+      index=[rows,squares]
       square.text(this.board[rows][squares]);
-      this.playerInput(square);
+      this.player1Input(square,index);
       //add classes for top, bottom, borders
       if (rows%3===0){
         square.addClass('top');
@@ -51,13 +53,16 @@ Board.prototype.render = function render(){
 }
 
 //Test: get an input-needs board set up
-Board.prototype.playerInput=function playerInput(square){
-  var scope=this;
-  console.log(this)
-  console.log(square)
+Board.prototype.player1Input=function playerInput(square, index){
+  var scope=this
   square.on('click',function(){
     square.text('X');
+    scope.board[index[0]][index[1]]='X'
+    console.log(scope.board[index[0]][index[1]])
+    console.log(scope);
+    scope.getWin();
   });
+
 }
 
 
@@ -81,7 +86,7 @@ Board.prototype.getWin = function getWin(){
       console.log('o wins 3')
     }else if ((this.board[0][2]==='O')&&(this.board[1][1]==='O')&&(this.board[2][0]==='O')) {
       console.log('o wins 4')
-    }else{
+    }else if (this.moves>7){
       console.log('it\'s a tie')
     }
   }
@@ -103,7 +108,6 @@ Board.prototype.getWin = function getWin(){
 $(document).ready(function(){
   var box = new Board(3)
   box.render()
-  
   //box.playerInput()
   //box=[['R','R','R'],['R','R','R'],['R','E','R']];
   // getWin(box);
