@@ -19,7 +19,7 @@ function Board(size){
 }
 //ToDo: board setup
 Board.prototype.render = function render(){
-  $('.players').remove();
+  $('center').remove();
   $('.winrar').remove();
   var row;
   var square;
@@ -166,7 +166,7 @@ Board.prototype.numPlayers= function numPlayers(){
   twoPlayer.text('2 player');
   var scope=this
   twoPlayer.on('click',function(){
-    scope.render()
+    scope.insertNameOnePlayer(2)
   })
   this.game.append(onePlayer);
   this.game.append(twoPlayer);
@@ -190,40 +190,53 @@ Board.prototype.playerNames=function playerNames(){
   secondPlayer.append(secondName);
   secondPlayer.append(secondScore);
   $('#container').append(firstPlayer);
-  $('#container').append(secondPlayer)
+  $('#container').append(secondPlayer);
 }
 //allows player to insert a name
-Board.prototype.insertName=function insertName(num){
+Board.prototype.insertNameOnePlayer=function insertNameOnePlayer(num){
   $('.players').remove();
   var input=$('<input>').addClass('name');
   var submit=$('<button>').addClass('name');
   submit.text('submit');
   var nameRequest=$('<p>').addClass('name');
   var centering=$('<center>')
+  nameRequest.text("Please put in the player's name");
+  var scope=this
   if (num===1){
-    nameRequest.text("Please put in the player's name");
     submit.on('click',function(){
-      $('.first h2').text(input.val())
-    });}
-  // }else if (num===2) {
-  //   for (var i=1;i<=num;i++){
-  //     console.log(i)
-  //     nameRequest.text("Please put in the player "+i+"'s name");
-  //     submit.on('click',function(){
-  //       if (i===1){
-  //         $('.first h2').text(input.val())
-  //       }else if (i===3) {
-  //       $('.second h2').text(input.val())
-  //       }
+      $('.first h2').text(input.val());
+      scope.render();
+    });
+  }else if (num===2) {
+    submit.on('click',function(){
+      $('.first h2').text(input.val());
+      input.val('')
+      submit.on('click',function(){
+        $('.second h2').text(input.val());
+        scope.render();
+      });
+    });
+  }
+  //
+  //     if (num===2){
+  //       nameRequest.text("Please put in the player "+1+"'s name");
+  //       submit.on('click',function(){
+  //           $('.first h2').text(input.val());
+  //           num--;
+  //
+  //       });
+  //     }else if (num===1) {
+  //       ("Please put in the player "+2+"'s name");
+  //       submit.on('click',function(){
+  //         $('.second h2').text(input.val());
+  //         scope.render();
   //     });
   //   }
-  }
   centering.append(nameRequest);
   centering.append(input);
   centering.append(submit);
   this.game.append(centering);
   $('#container').append(this.game);
-
 }
 
 //changes the screen to announce who won
@@ -253,9 +266,9 @@ Board.prototype.winMessage= function winMessage(winner){
 //window onload, for testing for now
 $(document).ready(function(){
   var box = new Board(3)
-  //box.numPlayers()
+  box.numPlayers()
   box.playerNames()
-  box.insertName(2)
+
   //box.playerInput()
   //box={board:[['R','R','R'],['R','R','R'],['R','R','R']]}
   // getWin(box);
