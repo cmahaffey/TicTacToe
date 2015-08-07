@@ -18,10 +18,14 @@ function Board(size){
   this.twoPlayer=false;
   this.players;
   this.game=$('<div>').addClass('board');
+  //variables for x vs o
+  this.p1x=true;
+  this.p1o=false;
 }
 //ToDo: board setup
 Board.prototype.render = function render(){
   $('center').remove();
+  $('.choice').remove();
   $('.winrar').remove();
   var row;
   var square;
@@ -69,8 +73,13 @@ Board.prototype.render = function render(){
     }
     this.game.append(row)
   }
+  var scope=this
   $('#container').append(this.game);
-
+  if (this.p1o){
+    setTimeout(function(){
+      scope.compAi();
+    },500);
+  }
   $('.square').on('click', function(e) {
     var square = $(e.target);
     var index = [
@@ -89,7 +98,7 @@ Board.prototype.render = function render(){
 //Test: get an input-needs board set up
 Board.prototype.player1Input= function player1Input(square, index){
   if (this.board[index[0]][index[1]]==='E'){
-  //var scope=this;
+  var scope=this;
   // square.on('click',function(){
     square.text('X');
     square.css({color:'chartreuse'});
@@ -106,7 +115,9 @@ Board.prototype.player1Input= function player1Input(square, index){
       this.getWin();}
     else{
       //this.getWin();
-      this.compAi();
+      setTimeout(function(){
+        scope.compAi()},500);
+      //this.compAi();
       // aiFunction();
     }
 
@@ -114,7 +125,7 @@ Board.prototype.player1Input= function player1Input(square, index){
 }
 Board.prototype.player2Input=function player2Input(square, index){
   if (this.board[index[0]][index[1]]==='E'){
-  //var scope=this;
+  var scope=this;
   // console.log(index);
   // square.on('click',function(){
     square.text('O');
@@ -132,7 +143,9 @@ Board.prototype.player2Input=function player2Input(square, index){
       this.getWin();}
     else{
       //this.getWin();
-      this.compAi();
+      setTimeout(function(){
+        scope.compAi()},500);
+      //this.compAi();
       //this.compAi();
     }
   }
@@ -143,48 +156,86 @@ Board.prototype.player2Input=function player2Input(square, index){
 //get a win
 Board.prototype.getWin = function getWin(){
   for (var i=0;i<this.board.length;i++){
+    var scope=this
     if((this.board[i][0]==='X')&&(this.board[i][1]==='X')&&(this.board[i][2]==='X')){
-      this.xwins++;
-      p1wins++;
+      if (this.p1x){
+        console.log('p1x')
+        p1wins++;
+      }else if (this.p1o){
+        p2wins++;
+      }
       this.playerWins();
-      return this.winMessage('X');
+      return setTimeout(function(){
+        scope.winMessage('X');}, 300);
     }else if ((this.board[0][i]==='X')&&(this.board[1][i]==='X')&&(this.board[2][i]==='X')) {
-      this.xwins++;
-      p1wins++;
+      if (this.p1x){
+        console.log('p1x')
+        p1wins++;
+      }else if (this.p1o){
+        p2wins++
+      }
       this.playerWins();
-      return this.winMessage('X');
+      return setTimeout(function(){
+        scope.winMessage('X');}, 300);
     }else if ((this.board[0][0]==='X')&&(this.board[1][1]==='X')&&(this.board[2][2]==='X')) {
-      this.xwins++;
-      p1wins++;
+      if (this.p1x){
+        console.log('p1x')
+        p1wins++;
+      }else if (this.p1o){
+        p2wins++
+      }
       this.playerWins();
-      return this.winMessage('X');
+      return setTimeout(function(){
+        scope.winMessage('X');}, 300);
     }else if ((this.board[0][2]==='X')&&(this.board[1][1]==='X')&&(this.board[2][0]==='X')) {
-      this.xwins++;
-      p1wins++;
+      if (this.p1x){
+        console.log('p1x')
+        p1wins++;
+      }else if (this.p1o){
+        p2wins++
+      }
       this.playerWins();
-      return this.winMessage('X');
+      return setTimeout(function(){
+  scope.winMessage('X');}, 300);
     }else if((this.board[i][0]==='O')&&(this.board[i][1]==='O')&&(this.board[i][2]==='O')){
-      this.owins++;
-      p2wins++;
+      if (this.p1x){
+        p2wins++;
+      }else if (this.p1o){
+        p1wins++
+      }
       this.playerWins();
-      return this.winMessage('O');
+      return setTimeout(function(){
+  scope.winMessage('O');}, 300);
     }else if ((this.board[0][i]==='O')&&(this.board[1][i]==='O')&&(this.board[2][i]==='O')) {
-      this.owins++;
-      p2wins++;
+      if (this.p1x){
+        p2wins++;
+      }else if (this.p1o){
+        p1wins++
+      }
       this.playerWins();
-      return this.winMessage('O');
+      return setTimeout(function(){
+  scope.winMessage('O');}, 300);
     }else if ((this.board[0][0]==='O')&&(this.board[1][1]==='O')&&(this.board[2][2]==='O')) {
-      this.owins++;
-      p2wins++;
+      if (this.p1x){
+        p2wins++;
+      }else if (this.p1o){
+        p1wins++;
+      }
       this.playerWins();
-      return this.winMessage('O');
+      return setTimeout(function(){
+  scope.winMessage('O');}, 300);
     }else if ((this.board[0][2]==='O')&&(this.board[1][1]==='O')&&(this.board[2][0]==='O')) {
-      this.owins++;
-      p2wins++;
+      if (this.p1x){
+        p2wins++;
+      }else if (this.p1o){
+        p1wins++;
+      }
       this.playerWins();
-      return this.winMessage('O');
+      return setTimeout(function(){
+  scope.winMessage('O');}, 300);
     }else if (this.moves===9){
-      return this.winMessage();
+      return setTimeout(function(){
+        scope.winMessage();}, 300);
     }
   }
 }
@@ -192,6 +243,28 @@ Board.prototype.getWin = function getWin(){
 //play
 
 //choosing x or o
+Board.prototype.teamChoice=function teamChoice(){
+  $('center').remove();
+  $('.winrar').remove();
+  var playX=$('<button>').addClass('X choice');
+  var playO=$('<button>').addClass('O choice');
+  playX.text(' X ');
+  playO.text(' O ');
+  var scope=this
+  playX.on('click',function(){
+    scope.p1x=true;
+    scope.p1o=false;
+    scope.render();
+  });
+  playO.on('click',function(){
+    scope.p1o=true;
+    scope.p1x=false;
+    scope.render();
+  });
+  this.game.append(playX);
+  this.game.append(playO);
+  $('#container').append(this.game)
+}
 
 //1 or 2 player
 Board.prototype.numPlayers= function numPlayers(){
@@ -234,6 +307,7 @@ Board.prototype.playerNames=function playerNames(){
   $('#container').append(secondPlayer);
 }
 Board.prototype.playerWins=function playerWins(){
+  console.log(p1wins)
   $('h4').remove();
   firstScore=$('<h4>');
   firstScore.text('Wins: '+p1wins);
@@ -258,18 +332,18 @@ Board.prototype.insertName=function insertName(num){
   if (num===1){
     submit.on('click',function(){
       $('.first h2').text(input.val());
-      scope.render();
+      scope.teamChoice();
     });
   }else if (num===2) {
     submit.on('click',function(){
       inputs.push(input.val());
       $('#first-player').text(inputs[0]);
       input.val('')
-      console.log($('#first-player'))
+      // console.log($('#first-player'))
       submit.on('click',function(){
         //doesn't show up
         //instead replaces first h2
-        console.log($('#second-player'))
+        // console.log($('#second-player'))
         $('#second-player').text(inputs[1]);
         scope.render();
 
@@ -309,7 +383,12 @@ Board.prototype.winMessage= function winMessage(winner){
     }
     //reset box
     scope.moves=0;
-    scope.render();
+    if (scope.players===2){
+      scope.render();
+    } else if (scope.players===1){
+      console.log('as;flkj')
+      scope.teamChoice();
+    }
   });
   //adds twice for some reason
   this.game.append(announcement);
@@ -319,7 +398,7 @@ Board.prototype.winMessage= function winMessage(winner){
 
 //comp ai
 Board.prototype.compAi=function compAi(){
-  console.log(this.moves)
+  // console.log(this.moves)
   var autoSquare;
   var colIdx= Math.floor(Math.random()*3);
   var rowIdx= Math.floor(Math.random()*3);
@@ -328,16 +407,27 @@ Board.prototype.compAi=function compAi(){
   }
   if (this.board[colIdx][rowIdx] === "E"){
     // console.log('here')
-    this.board[colIdx][rowIdx]="O";
-    autoSquare=$("div").find("[col='" + colIdx + "'][row='" + rowIdx + "']")
-    autoSquare.text('O');
+    if (this.p1x){
+      this.board[colIdx][rowIdx]="O";
+      autoSquare=$("div").find("[col='" + colIdx + "'][row='" + rowIdx + "']")
+      autoSquare.text('O');
+      this.xplays=true;
+      this.oplays=false;
+    }else if (this.p1o){
+      this.board[colIdx][rowIdx]="X";
+      autoSquare=$("div").find("[col='" + colIdx + "'][row='" + rowIdx + "']")
+      autoSquare.text('X');
+      this.xplays=false;
+      this.oplays=true;
+    }
     autoSquare.css({color:'chartreuse'});
-    this.getWin();
     // console.log(colIdx+','+rowIdx)
     // console.log(this)
     this.moves++
+    this.getWin();
+    console.log(this.moves)
   }else{
-    console.log('but then here')
+    // console.log('but then here')
     this.compAi();
   }
 }

@@ -8,5 +8,6 @@
 4) better css
   //more responsiveness
 5) x or o choice
-  // set up a bunch of if statement in p1 input, and in getWin
+  // set up a bunch of if statement in p1 input
+  //redo compAI
   // render new page to ask the question
