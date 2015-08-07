@@ -142,27 +142,43 @@ Board.prototype.getWin = function getWin(){
   for (var i=0;i<this.board.length;i++){
     if((this.board[i][0]==='X')&&(this.board[i][1]==='X')&&(this.board[i][2]==='X')){
       this.xwins++;
+      p1wins++;
+      this.playerWins();
       return this.winMessage('X');
     }else if ((this.board[0][i]==='X')&&(this.board[1][i]==='X')&&(this.board[2][i]==='X')) {
       this.xwins++;
+      p1wins++;
+      this.playerWins();
       return this.winMessage('X');
     }else if ((this.board[0][0]==='X')&&(this.board[1][1]==='X')&&(this.board[2][2]==='X')) {
       this.xwins++;
+      p1wins++;
+      this.playerWins();
       return this.winMessage('X');
     }else if ((this.board[0][2]==='X')&&(this.board[1][1]==='X')&&(this.board[2][0]==='X')) {
       this.xwins++;
+      p1wins++;
+      this.playerWins();
       return this.winMessage('X');
     }else if((this.board[i][0]==='O')&&(this.board[i][1]==='O')&&(this.board[i][2]==='O')){
       this.owins++;
+      p2wins++;
+      this.playerWins();
       return this.winMessage('O');
     }else if ((this.board[0][i]==='O')&&(this.board[1][i]==='O')&&(this.board[2][i]==='O')) {
       this.owins++;
+      p2wins++;
+      this.playerWins();
       return this.winMessage('O');
     }else if ((this.board[0][0]==='O')&&(this.board[1][1]==='O')&&(this.board[2][2]==='O')) {
       this.owins++;
+      p2wins++;
+      this.playerWins();
       return this.winMessage('O');
     }else if ((this.board[0][2]==='O')&&(this.board[1][1]==='O')&&(this.board[2][0]==='O')) {
       this.owins++;
+      p2wins++;
+      this.playerWins();
       return this.winMessage('O');
     }else if (this.moves===9){
       return this.winMessage();
@@ -201,18 +217,29 @@ Board.prototype.playerNames=function playerNames(){
   secondPlayer=$('<div>').addClass('player second');
   firstName=$('<h2>').attr('id','first-player');
   firstName.text('____________');
-  firstScore=$('<h4>');
-  firstScore.text('Wins: 0');
+  // firstScore=$('<h4>');
+  // firstScore.text('Wins: '+p1wins);
   secondName=$('<h2>').attr('id','second-player');;
   secondName.text('Computer');
-  secondScore=$('<h4>');
-  secondScore.text('Wins: 0');
+  // secondScore=$('<h4>');
+  // secondScore.text('Wins: '+p2wins);
   firstPlayer.append(firstName);
-  firstPlayer.append(firstScore);
+  // firstPlayer.append(firstScore);
   secondPlayer.append(secondName);
-  secondPlayer.append(secondScore);
+  // secondPlayer.append(secondScore);
   $('#container').append(firstPlayer);
   $('#container').append(secondPlayer);
+}
+Board.prototype.playerWins=function playerWins(){
+  $('h4').remove();
+  firstScore=$('<h4>');
+  firstScore.text('Wins: '+p1wins);
+  first=$('.first').append(firstScore);
+  secondScore=$('<h4>');
+  secondScore.text('Wins: '+p2wins);
+  second=$('.second').append(secondScore);
+  $('#container').append(first);
+  $('#container').append(second);
 }
 //allows player to insert a name
 Board.prototype.insertName=function insertName(num){
@@ -309,8 +336,9 @@ Board.prototype.compAi=function compAi(){
 //window onload, for testing for now
 $(document).ready(function(){
   var box = new Board(3)
-  box.numPlayers()
-  box.playerNames()
+  box.numPlayers();
+  box.playerNames();
+  box.playerWins();
 
   //box.playerInput()
   //box={board:[['R','R','R'],['R','R','R'],['R','R','R']]}
