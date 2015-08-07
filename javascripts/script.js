@@ -244,6 +244,7 @@ Board.prototype.playerWins=function playerWins(){
 //allows player to insert a name
 Board.prototype.insertName=function insertName(num){
   $('.players').remove();
+  var inputs=[];
   var input=$('<input>').addClass('name');
   var submit=$('<button>').addClass('name');
   submit.text('submit');
@@ -258,13 +259,18 @@ Board.prototype.insertName=function insertName(num){
     });
   }else if (num===2) {
     submit.on('click',function(){
-      $('#first-player').text(input.val());
+      inputs.push(input.val())
+      $('#first-player').text(inputs[0]);
       input.val('')
+      console.log(input)
+      console.log($('#first-player'))
       submit.on('click',function(){
         //doesn't show up
         //instead replaces first h2
-        $('#second-player').text(input.val());
+        console.log($('#second-player'))
+        $('#second-player').text(inputs[1]);
         scope.render();
+
       });
     });
   }
