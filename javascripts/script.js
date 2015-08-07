@@ -2,6 +2,7 @@ console.log('let\'s play');
 //Test: make a tictactoe board as an array of arrays
 var p1wins=0;
 var p2wins=0;
+
 function Board(size){
   this.board=[];
   for (var i=0;i<size;i++){
@@ -165,9 +166,12 @@ Board.prototype.numPlayers= function numPlayers(){
   onePlayer.text('1 player');
   twoPlayer.text('2 player');
   var scope=this
+  onePlayer.on('click',function(){
+    scope.insertName(1)
+  });
   twoPlayer.on('click',function(){
-    scope.insertNameOnePlayer(2)
-  })
+    scope.insertName(2)
+  });
   this.game.append(onePlayer);
   this.game.append(twoPlayer);
   $('#container').append(this.game)
@@ -193,7 +197,7 @@ Board.prototype.playerNames=function playerNames(){
   $('#container').append(secondPlayer);
 }
 //allows player to insert a name
-Board.prototype.insertNameOnePlayer=function insertNameOnePlayer(num){
+Board.prototype.insertName=function insertName(num){
   $('.players').remove();
   var input=$('<input>').addClass('name');
   var submit=$('<button>').addClass('name');
@@ -251,6 +255,14 @@ Board.prototype.winMessage= function winMessage(winner){
   scope=this
   reset.on('click',function(){
     //returns the previously won game, needs to be reset
+    //reset board
+    for (var i=0;i<scope.board.length;i++){
+      for (var j=0;j<scope.board.length;j++){
+        scope.board[i][j]=' ';
+      }
+    }
+    //reset box
+    scope.moves=0;
     scope.render();
   });
   //adds twice for some reason
