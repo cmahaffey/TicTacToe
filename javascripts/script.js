@@ -93,12 +93,13 @@ Board.prototype.player1Input= function player1Input(square, index){
     this.board[index[0]][index[1]]='X'
     // console.log(scope.board[index[0]][index[1]])
     // console.log(scope);
-    this.getWin();
+
   // });
   // Flip through sides X and O
     this.xplays=false;
     this.oplays=true;
     this.moves++;
+    this.getWin();
   }
 }
 Board.prototype.player2Input=function player2Input(square, index){
@@ -110,12 +111,13 @@ Board.prototype.player2Input=function player2Input(square, index){
     this.board[index[0]][index[1]]='O'
     // console.log(scope.board[index[0]][index[1]])
     // console.log(scope);
-    this.getWin();
+    // this.getWin();
   // });
   // Flip through sides X and O
     this.oplays=false;
     this.xplays=true;
     this.moves++;
+    this.getWin();
   }
 }
 
@@ -149,8 +151,8 @@ Board.prototype.getWin = function getWin(){
     }else if ((this.board[0][2]==='O')&&(this.board[1][1]==='O')&&(this.board[2][0]==='O')) {
       this.owins++;
       return this.winMessage('O');
-    }else if (this.moves>7){
-      console.log('it\'s a tie')
+    }else if (this.moves===9){
+      return this.winMessage();
     }
   }
 }
@@ -216,26 +218,13 @@ Board.prototype.insertName=function insertName(num){
       $('.first h2').text(input.val());
       input.val('')
       submit.on('click',function(){
+        //doesn't show up
+        //instead replaces first h2
         $('.second h2').text(input.val());
         scope.render();
       });
     });
   }
-  //
-  //     if (num===2){
-  //       nameRequest.text("Please put in the player "+1+"'s name");
-  //       submit.on('click',function(){
-  //           $('.first h2').text(input.val());
-  //           num--;
-  //
-  //       });
-  //     }else if (num===1) {
-  //       ("Please put in the player "+2+"'s name");
-  //       submit.on('click',function(){
-  //         $('.second h2').text(input.val());
-  //         scope.render();
-  //     });
-  //   }
   centering.append(nameRequest);
   centering.append(input);
   centering.append(submit);
@@ -249,13 +238,17 @@ Board.prototype.winMessage= function winMessage(winner){
   $('.board-row').remove();//
   announcement=$('<h3>').addClass('winrar');
   //add an if for the tie eventuality
-  announcement.text(winner+' wins!');
+  if ((winner==='O')||(winner==='X')){
+    announcement.text(winner+' wins!');
+  }else{
+    announcement.text('You tied!');
+  }
+
   reset=$('<button>').addClass('winrar');
   reset.text('Play again?');
   scope=this
   reset.on('click',function(){
-    //returns the previously won game, needs to be reset
-    //reset board
+    //reset for board
     for (var i=0;i<scope.board.length;i++){
       for (var j=0;j<scope.board.length;j++){
         scope.board[i][j]=' ';
