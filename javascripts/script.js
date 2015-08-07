@@ -49,24 +49,24 @@ Board.prototype.render = function render(){
 
 
       //add classes for top, bottom, borders
-      if (rows%3===0){
+      if (rows%this.board.length===0){
         square.addClass('top');
 
-      }else if (rows%3===1){
-        square.addClass('center');
-
-      }else if (rows%3===2){
+      }else if (rows%this.board.length===(this.board.length-1)){
         square.addClass('bottom');
 
+      }else {
+        square.addClass('center');
+
       }
-      if (squares%3===0){
+      if (squares%this.board.length===0){
         square.addClass('left');
 
-      }else if (squares%3===1){
-        square.addClass('middle');
-
-      }else if (squares%3===2){
+      }else if (squares%this.board.length===(this.board.length-1)){
         square.addClass('right');
+
+      }else {
+        square.addClass('middle');
 
       }
       row.append(square)
@@ -436,7 +436,7 @@ Board.prototype.compAi=function compAi(){
 
 //window onload, for testing for now
 $(document).ready(function(){
-  var box = new Board(3)
+  var box = new Board(5)
   box.numPlayers();
   box.playerNames();
   box.playerWins();

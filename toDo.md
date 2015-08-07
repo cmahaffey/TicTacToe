@@ -7,7 +7,7 @@
   //play 2 win
 4) better css
   //more responsiveness
-5) x or o choice
+5) x or o choice--done, needs formatting of button
   // set up a bunch of if statement in p1 input
   //redo compAI
   // render new page to ask the question
