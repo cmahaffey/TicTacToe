@@ -1,12 +1,15 @@
 body{
-  background-color: chartreuse;
+  background-color: black;
 }
 *{
   padding: 0;
   margin: 0;
+  color: chartreuse;
+  background-color: 0;
 }
 .player{
   text-align: center;
+  color:chartreuse;
 }
 .first{
   float: left;
@@ -18,7 +21,7 @@ body{
 }
 .board{
   position: absolute;
-  top:4em;
+  top:40%;
   left:30%;
   width: 40%;
   height:40%;
@@ -28,33 +31,33 @@ body{
 .board-row{
   display: block;
   width:100%;
-  margin:-14px;
+  margin:-2px;
 }
 .square{
   display: inline-block;
+  /*color: black;*/
   height:51px;
   width:51px;
-  background-color: blue;
 }
 .top{
-  border-bottom: 3px solid black;
+  border-bottom: 3px solid chartreuse;
 }
 .center{
-  border-top: 1.5px solid black;
-  border-bottom: 1.5px solid black;
+  border-top: 3px solid chartreuse;
+  border-bottom: 3px solid chartreuse;
 }
 .bottom{
-  border-top: 1.5px solid black;
+  border-top: 3px solid chartreuse;
 }
 .middle{
-  border-left: 1.5px solid black;
-  border-right: 1.5px solid black;
+  border-left: 3px solid chartreuse;
+  border-right: 3px solid chartreuse;
 }
 .left{
-  border-right: 1.5px solid black;
+  border-right: 3px solid chartreuse;
 }
 .right{
-  border-left: 1.5px solid black;
+  border-left: 3px solid chartreuse;
 }
 #restart{
   text-align: center;

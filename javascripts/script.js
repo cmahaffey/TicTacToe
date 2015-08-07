@@ -8,7 +8,7 @@ function Board(size){
   for (var i=0;i<size;i++){
     this.board.push([]);
     for(var j=0;j<size;j++){
-      this.board[i].push(' ');
+      this.board[i].push('E');
     }
   }
   this.moves=0;
@@ -41,6 +41,7 @@ Board.prototype.render = function render(){
       });
       // index=[rows,squares]
       square.text(this.board[rows][squares]);
+      square.css({color:'black'})
 
 
       //add classes for top, bottom, borders
@@ -87,10 +88,11 @@ Board.prototype.render = function render(){
 
 //Test: get an input-needs board set up
 Board.prototype.player1Input= function player1Input(square, index){
-  if (this.board[index[0]][index[1]]===' '){
+  if (this.board[index[0]][index[1]]==='E'){
   //var scope=this;
   // square.on('click',function(){
     square.text('X');
+    square.css({color:'chartreuse'});
     this.board[index[0]][index[1]]='X'
     this.moves++;
     // console.log(scope.board[index[0]][index[1]])
@@ -111,11 +113,12 @@ Board.prototype.player1Input= function player1Input(square, index){
   }
 }
 Board.prototype.player2Input=function player2Input(square, index){
-  if (this.board[index[0]][index[1]]===' '){
+  if (this.board[index[0]][index[1]]==='E'){
   //var scope=this;
   // console.log(index);
   // square.on('click',function(){
     square.text('O');
+    square.css({color:'chartreuse'});
     this.board[index[0]][index[1]]='O'
     this.moves++;
     // console.log(scope.board[index[0]][index[1]])
@@ -244,7 +247,7 @@ Board.prototype.playerWins=function playerWins(){
 //allows player to insert a name
 Board.prototype.insertName=function insertName(num){
   $('.players').remove();
-  var inputs=[];
+  var inputs=[]
   var input=$('<input>').addClass('name');
   var submit=$('<button>').addClass('name');
   submit.text('submit');
@@ -259,10 +262,9 @@ Board.prototype.insertName=function insertName(num){
     });
   }else if (num===2) {
     submit.on('click',function(){
-      inputs.push(input.val())
+      inputs.push(input.val());
       $('#first-player').text(inputs[0]);
       input.val('')
-      console.log(input)
       console.log($('#first-player'))
       submit.on('click',function(){
         //doesn't show up
@@ -302,7 +304,7 @@ Board.prototype.winMessage= function winMessage(winner){
     //reset for board
     for (var i=0;i<scope.board.length;i++){
       for (var j=0;j<scope.board.length;j++){
-        scope.board[i][j]=' ';
+        scope.board[i][j]='E';
       }
     }
     //reset box
@@ -318,15 +320,18 @@ Board.prototype.winMessage= function winMessage(winner){
 //comp ai
 Board.prototype.compAi=function compAi(){
   console.log(this.moves)
+  var autoSquare;
   var colIdx= Math.floor(Math.random()*3);
   var rowIdx= Math.floor(Math.random()*3);
   if (this.moves===9){
     return this.getWin();
   }
-  if (this.board[colIdx][rowIdx] === " "){
+  if (this.board[colIdx][rowIdx] === "E"){
     // console.log('here')
     this.board[colIdx][rowIdx]="O";
-    $("div").find("[col='" + colIdx + "'][row='" + rowIdx + "']").text('O');
+    autoSquare=$("div").find("[col='" + colIdx + "'][row='" + rowIdx + "']")
+    autoSquare.text('O');
+    autoSquare.css({color:'chartreuse'});
     this.getWin();
     // console.log(colIdx+','+rowIdx)
     // console.log(this)
