@@ -16,6 +16,7 @@ function Board(size){
   this.oplays=false;
   this.onePlayer=false;
   this.twoPlayer=false;
+  this.players;
   this.game=$('<div>').addClass('board');
 }
 //ToDo: board setup
@@ -72,8 +73,8 @@ Board.prototype.render = function render(){
   $('.square').on('click', function(e) {
     var square = $(e.target);
     var index = [
-      square.attr('row'),
-      square.attr('col')
+      square.attr('col'),
+      square.attr('row')
     ];
 
     if (scope.xplays){
@@ -91,15 +92,22 @@ Board.prototype.player1Input= function player1Input(square, index){
   // square.on('click',function(){
     square.text('X');
     this.board[index[0]][index[1]]='X'
+    this.moves++;
     // console.log(scope.board[index[0]][index[1]])
     // console.log(scope);
 
   // });
   // Flip through sides X and O
-    this.xplays=false;
-    this.oplays=true;
-    this.moves++;
-    this.getWin();
+    if (this.players===2){
+      this.xplays=false;
+      this.oplays=true;
+      this.getWin();}
+    else{
+      //this.getWin();
+      this.compAi();
+      // aiFunction();
+    }
+
   }
 }
 Board.prototype.player2Input=function player2Input(square, index){
@@ -109,15 +117,21 @@ Board.prototype.player2Input=function player2Input(square, index){
   // square.on('click',function(){
     square.text('O');
     this.board[index[0]][index[1]]='O'
+    this.moves++;
     // console.log(scope.board[index[0]][index[1]])
     // console.log(scope);
     // this.getWin();
   // });
   // Flip through sides X and O
-    this.oplays=false;
-    this.xplays=true;
-    this.moves++;
-    this.getWin();
+    if (this.players===2){
+      this.xplays=true;
+      this.oplays=false;
+      this.getWin();}
+    else{
+      //this.getWin();
+      this.compAi();
+      //this.compAi();
+    }
   }
 }
 
@@ -126,7 +140,6 @@ Board.prototype.player2Input=function player2Input(square, index){
 //get a win
 Board.prototype.getWin = function getWin(){
   for (var i=0;i<this.board.length;i++){
-    console.log(this.moves)
     if((this.board[i][0]==='X')&&(this.board[i][1]==='X')&&(this.board[i][2]==='X')){
       this.xwins++;
       return this.winMessage('X');
@@ -169,10 +182,13 @@ Board.prototype.numPlayers= function numPlayers(){
   twoPlayer.text('2 player');
   var scope=this
   onePlayer.on('click',function(){
-    scope.insertName(1)
+    //same issue as name, jumps this and then goes to players=2
+    scope.players=1;
+    scope.insertName(1);
   });
   twoPlayer.on('click',function(){
-    scope.insertName(2)
+    scope.players=2;
+    scope.insertName(2);
   });
   this.game.append(onePlayer);
   this.game.append(twoPlayer);
@@ -183,11 +199,11 @@ Board.prototype.numPlayers= function numPlayers(){
 Board.prototype.playerNames=function playerNames(){
   firstPlayer=$('<div>').addClass('player first');
   secondPlayer=$('<div>').addClass('player second');
-  firstName=$('<h2>');
+  firstName=$('<h2>').attr('id','first-player');
   firstName.text('____________');
   firstScore=$('<h4>');
   firstScore.text('Wins: 0');
-  secondName=$('<h2>');
+  secondName=$('<h2>').attr('id','second-player');;
   secondName.text('Computer');
   secondScore=$('<h4>');
   secondScore.text('Wins: 0');
@@ -215,12 +231,12 @@ Board.prototype.insertName=function insertName(num){
     });
   }else if (num===2) {
     submit.on('click',function(){
-      $('.first h2').text(input.val());
+      $('#first-player').text(input.val());
       input.val('')
       submit.on('click',function(){
         //doesn't show up
         //instead replaces first h2
-        $('.second h2').text(input.val());
+        $('#second-player').text(input.val());
         scope.render();
       });
     });
@@ -234,6 +250,8 @@ Board.prototype.insertName=function insertName(num){
 
 //changes the screen to announce who won
 Board.prototype.winMessage= function winMessage(winner){
+  this.xplays=true;
+  this.oplays=false;
 
   $('.board-row').remove();//
   announcement=$('<h3>').addClass('winrar');
@@ -245,7 +263,7 @@ Board.prototype.winMessage= function winMessage(winner){
   }
 
   reset=$('<button>').addClass('winrar');
-  reset.text('Play again?');
+  reset.text('Play again?').attr('id','restart');
   scope=this
   reset.on('click',function(){
     //reset for board
@@ -265,6 +283,26 @@ Board.prototype.winMessage= function winMessage(winner){
 }
 
 //comp ai
+Board.prototype.compAi=function compAi(){
+  console.log(this.moves)
+  var colIdx= Math.floor(Math.random()*3);
+  var rowIdx= Math.floor(Math.random()*3);
+  if (this.moves===9){
+    return this.getWin();
+  }
+  if (this.board[colIdx][rowIdx] === " "){
+    // console.log('here')
+    this.board[colIdx][rowIdx]="O";
+    $("div").find("[col='" + colIdx + "'][row='" + rowIdx + "']").text('O');
+    this.getWin();
+    // console.log(colIdx+','+rowIdx)
+    // console.log(this)
+    this.moves++
+  }else{
+    console.log('but then here')
+    this.compAi();
+  }
+}
 
 //big boards
 
