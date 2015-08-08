@@ -503,24 +503,31 @@ Board.prototype.boardWidth=function boardWidth(players){
   fourx4.on('click',function(){
     if (players===1){
       scope.boardSize=4;
-      scope.teamChoice(4);
+      scope.teamChoice();
     }else if (players===2){
       scope.boardSize=4;
-      scope.render(4);
+      scope.render();
     }
   });
   fivex5.on('click',function(){
     if (players===1){
       scope.boardSize=5;
-      scope.teamChoice(5);
+      scope.teamChoice();
     }else if (players===2){
       scope.boardSize=5;
-      scope.render(5);
+      scope.render();
     }
   });
   otherB.on('click',function(){
-    scope.teamChoice(otherI.val());
-
+    if (isNaN(otherI.val())){
+    }else{
+      scope.boardSize=otherI.val();
+    }
+    if (players===1){
+      scope.teamChoice();
+    }else if (players===2){
+      scope.render();
+    }
   });
   this.game.append(threex3);
   this.game.append(fourx4);
