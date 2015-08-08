@@ -3,14 +3,8 @@ console.log('let\'s play');
 var p1wins=0;
 var p2wins=0;
 
-function Board(size){
+function Board(){
   this.board=[];
-  for (var i=0;i<size;i++){
-    this.board.push([]);
-    for(var j=0;j<size;j++){
-      this.board[i].push('E');
-    }
-  }
   this.moves=0;
   this.xplays=true;
   this.oplays=false;
@@ -21,12 +15,20 @@ function Board(size){
   //variables for x vs o
   this.p1x=true;
   this.p1o=false;
+  this.boardSize=3
 }
 //ToDo: board setup
 Board.prototype.render = function render(){
-  $('center').remove();
+  $('.size').remove();
   $('.choice').remove();
   $('.winrar').remove();
+  // console.log(this.board)
+  for (var i=0;i<this.boardSize;i++){
+    this.board.push([]);
+    for(var j=0;j<this.boardSize;j++){
+      this.board[i].push('E');
+    }
+  }
   var row;
   var square;
   var scope = this;
@@ -275,13 +277,13 @@ Board.prototype.getWinLDiag= function getWinRLDiag(){
 //get a win
 Board.prototype.getWin = function getWin(){
   var scope=this
-  if (this.moves<9){
+  if (this.moves<Math.pow(this.board.length,2)){
     this.getWinRow();
     this.getWinCol();
     this.getWinRDiag();
     this.getWinLDiag();
   }
-  if (this.moves===9&&this.getWinRow()&&this.getWinCol()&&this.getWinRDiag()&&this.getWinLDiag()){
+  if (this.moves===Math.pow(this.board.length,2)&&this.getWinRow()&&this.getWinCol()&&this.getWinRDiag()&&this.getWinLDiag()){
       return setTimeout(function(){
         scope.winMessage();}, 300);
   }
@@ -291,8 +293,9 @@ Board.prototype.getWin = function getWin(){
 //play
 
 //choosing x or o
-Board.prototype.teamChoice=function teamChoice(){
+Board.prototype.teamChoice=function teamChoice(num){
   $('center').remove();
+  $('.size').remove();
   $('.winrar').remove();
   var playX=$('<button>').addClass('X choice');
   var playO=$('<button>').addClass('O choice');
@@ -302,12 +305,12 @@ Board.prototype.teamChoice=function teamChoice(){
   playX.on('click',function(){
     scope.p1x=true;
     scope.p1o=false;
-    scope.render();
+    scope.render(num);
   });
   playO.on('click',function(){
     scope.p1o=true;
     scope.p1x=false;
-    scope.render();
+    scope.render(num);
   });
   this.game.append(playX);
   this.game.append(playO);
@@ -355,7 +358,7 @@ Board.prototype.playerNames=function playerNames(){
   $('#container').append(secondPlayer);
 }
 Board.prototype.playerWins=function playerWins(){
-  console.log(p1wins)
+  // console.log(p1wins)
   $('h4').remove();
   firstScore=$('<h4>');
   firstScore.text('Wins: '+p1wins);
@@ -367,7 +370,7 @@ Board.prototype.playerWins=function playerWins(){
   $('#container').append(second);
 }
 //allows player to insert a name
-Board.prototype.insertName=function insertName(num){
+Board.prototype.insertName=function insertName(players){
   $('.players').remove();
   var inputs=[]
   var input=$('<input>').addClass('name');
@@ -377,12 +380,12 @@ Board.prototype.insertName=function insertName(num){
   var centering=$('<center>')
   nameRequest.text("Please put in the player's name");
   var scope=this
-  if (num===1){
+  if (players===1){
     submit.on('click',function(){
       $('.first h2').text(input.val());
-      scope.teamChoice();
+      scope.boardWidth(players);
     });
-  }else if (num===2) {
+  }else if (players===2) {
     submit.on('click',function(){
       inputs.push(input.val());
       $('#first-player').text(inputs[0]);
@@ -393,7 +396,7 @@ Board.prototype.insertName=function insertName(num){
         //instead replaces first h2
         // console.log($('#second-player'))
         $('#second-player').text(inputs[1]);
-        scope.render();
+        scope.boardWidth(players);
 
       });
     });
@@ -424,17 +427,12 @@ Board.prototype.winMessage= function winMessage(winner){
   scope=this
   reset.on('click',function(){
     //reset for board
-    for (var i=0;i<scope.board.length;i++){
-      for (var j=0;j<scope.board.length;j++){
-        scope.board[i][j]='E';
-      }
-    }
+    scope.board=[]
     //reset box
     scope.moves=0;
     if (scope.players===2){
       scope.render();
     } else if (scope.players===1){
-      console.log('as;flkj')
       scope.teamChoice();
     }
   });
@@ -448,8 +446,8 @@ Board.prototype.winMessage= function winMessage(winner){
 Board.prototype.compAi=function compAi(){
   // console.log(this.moves)
   var autoSquare;
-  var colIdx= Math.floor(Math.random()*3);
-  var rowIdx= Math.floor(Math.random()*3);
+  var colIdx= Math.floor(Math.random()*this.board.length);
+  var rowIdx= Math.floor(Math.random()*this.board.length);
   if (this.moves===9){
     return this.getWin();
   }
@@ -473,18 +471,73 @@ Board.prototype.compAi=function compAi(){
     // console.log(this)
     this.moves++
     this.getWin();
-    console.log(this.moves)
+    // console.log(this.moves)
   }else{
     // console.log('but then here')
     this.compAi();
   }
 }
 
-//big boards
+//board size selection
+Board.prototype.boardWidth=function boardWidth(players){
+  $('center').remove();
+  var prompter=$('<h3>')
+  prompter.text()
+  var threex3=$('<button>').addClass('size');
+  var fourx4=$('<button>').addClass('size');
+  var fivex5=$('<button>').addClass('size');
+  var otherI=$('<input>').addClass('size pChoice')
+  var otherB=$('<button>').addClass('size pChoice');
+  threex3.text(' 3x3 ');
+  fourx4.text(' 4x4 ');
+  fivex5.text(' 5x5 ');
+  otherB.text(' Create!')
+  var scope=this;
+  threex3.on('click',function(){
+    if (players===1){
+      scope.teamChoice();
+    }else if (players===2){
+      scope.render();
+    }
+  });
+  fourx4.on('click',function(){
+    if (players===1){
+      scope.boardSize=4;
+      scope.teamChoice(4);
+    }else if (players===2){
+      scope.boardSize=4;
+      scope.render(4);
+    }
+  });
+  fivex5.on('click',function(){
+    if (players===1){
+      scope.boardSize=5;
+      scope.teamChoice(5);
+    }else if (players===2){
+      scope.boardSize=5;
+      scope.render(5);
+    }
+  });
+  otherB.on('click',function(){
+    scope.teamChoice(otherI.val());
+
+  });
+  this.game.append(threex3);
+  this.game.append(fourx4);
+  this.game.append(fivex5);
+  this.game.append(otherI);
+  this.game.append(otherB);
+  $('#container').append(this.game)
+
+}
+//play function
+Board.prototype.play=function play(num){
+
+}
 
 //window onload, for testing for now
 $(document).ready(function(){
-  var box = new Board(3)
+  var box = new Board()
   box.numPlayers();
   box.playerNames();
   box.playerWins();
