@@ -78,7 +78,7 @@ Board.prototype.render = function render(){
   if (this.p1o){
     setTimeout(function(){
       scope.compAi();
-    },500);
+     },500);
   }
   $('.square').on('click', function(e) {
     var square = $(e.target);
@@ -151,93 +151,141 @@ Board.prototype.player2Input=function player2Input(square, index){
   }
 }
 
+// win for x and o
+Board.prototype.xWins=function xWins(){
+  var scope=this;
+  if (this.p1x){
+    p1wins++;
+  }else if (this.p1o){
+    p2wins++;
+  }
+  this.playerWins();
+  setTimeout(function(){
+    scope.winMessage('X');}, 300);
+  return false;
+}
+Board.prototype.oWins=function oWins(){
+  var scope=this;
+  if (this.p1x){
+    p2wins++;
+  }else if (this.p1o){
+    p1wins++
+  }
+  this.playerWins();
+  setTimeout(function(){
+    scope.winMessage('O');}, 300);
+  return false;
+}
+//get win by column
+Board.prototype.getWinCol= function getWinCol(){
 
+  var xwin=0;
+  var owin=0;
+  for (var i=0;i<this.board.length;i++){
+    for (var j=0;j<this.board.length;j++){
+      if(this.board[i][j]==='X'){
+        xwin++;
+      }
+      if(xwin===this.board.length){
+        return this.xWins()
+      }
+      if(this.board[i][j]==='O'){
+        owin++;
+      }
+      if(owin===this.board.length){
+        return this.oWins()
+      }
+    }
+    xwin=0;
+    owin=0;
+  }
+  return true;
+}
+//get win by row
+Board.prototype.getWinRow= function getWinRow(){
+
+  var xwin=0;
+  var owin=0;
+  for (var i=0;i<this.board.length;i++){
+    for (var j=0;j<this.board.length;j++){
+      if(this.board[j][i]==='X'){
+        xwin++;
+      }
+      if(xwin===this.board.length){
+        return this.xWins()
+      }
+      if(this.board[j][i]==='O'){
+        owin++;
+      }
+      if(owin===this.board.length){
+        return this.oWins()
+      }
+    }
+    xwin=0;
+    owin=0;
+  }
+  return true;
+}
+// get right down diagonal wins
+Board.prototype.getWinRDiag= function getWinRDiag(){
+  var xwin=0;
+  var owin=0;
+  for (var i=0;i<this.board.length;i++){
+      if(this.board[i][i]==='X'){
+        xwin++;
+      }
+      if(xwin===this.board.length){
+        return this.xWins()
+      }
+      if(this.board[i][i]==='O'){
+        owin++;
+      }
+      if(owin===this.board.length){
+        return this.oWins()
+      }
+  }
+  xwin=0;
+  owin=0;
+  return true;
+}
+
+//get left down diagonal wins
+Board.prototype.getWinLDiag= function getWinRLDiag(){
+  var xwin=0;
+  var owin=0;
+  for (var i=0;i<this.board.length;i++){
+      if(this.board[i][this.board.length-1-i]==='X'){
+        xwin++;
+      }
+      if(xwin===this.board.length){
+        return this.xWins()
+      }
+      if(this.board[i][this.board.length-1-i]==='O'){
+        owin++;
+      }
+      if(owin===this.board.length){
+        return this.oWins()
+      }
+  }
+  xwin=0;
+  owin=0;
+  return true;
+}
 
 //get a win
 Board.prototype.getWin = function getWin(){
-  for (var i=0;i<this.board.length;i++){
-    var scope=this
-    if((this.board[i][0]==='X')&&(this.board[i][1]==='X')&&(this.board[i][2]==='X')){
-      if (this.p1x){
-        console.log('p1x')
-        p1wins++;
-      }else if (this.p1o){
-        p2wins++;
-      }
-      this.playerWins();
-      return setTimeout(function(){
-        scope.winMessage('X');}, 300);
-    }else if ((this.board[0][i]==='X')&&(this.board[1][i]==='X')&&(this.board[2][i]==='X')) {
-      if (this.p1x){
-        console.log('p1x')
-        p1wins++;
-      }else if (this.p1o){
-        p2wins++
-      }
-      this.playerWins();
-      return setTimeout(function(){
-        scope.winMessage('X');}, 300);
-    }else if ((this.board[0][0]==='X')&&(this.board[1][1]==='X')&&(this.board[2][2]==='X')) {
-      if (this.p1x){
-        console.log('p1x')
-        p1wins++;
-      }else if (this.p1o){
-        p2wins++
-      }
-      this.playerWins();
-      return setTimeout(function(){
-        scope.winMessage('X');}, 300);
-    }else if ((this.board[0][2]==='X')&&(this.board[1][1]==='X')&&(this.board[2][0]==='X')) {
-      if (this.p1x){
-        console.log('p1x')
-        p1wins++;
-      }else if (this.p1o){
-        p2wins++
-      }
-      this.playerWins();
-      return setTimeout(function(){
-  scope.winMessage('X');}, 300);
-    }else if((this.board[i][0]==='O')&&(this.board[i][1]==='O')&&(this.board[i][2]==='O')){
-      if (this.p1x){
-        p2wins++;
-      }else if (this.p1o){
-        p1wins++
-      }
-      this.playerWins();
-      return setTimeout(function(){
-  scope.winMessage('O');}, 300);
-    }else if ((this.board[0][i]==='O')&&(this.board[1][i]==='O')&&(this.board[2][i]==='O')) {
-      if (this.p1x){
-        p2wins++;
-      }else if (this.p1o){
-        p1wins++
-      }
-      this.playerWins();
-      return setTimeout(function(){
-  scope.winMessage('O');}, 300);
-    }else if ((this.board[0][0]==='O')&&(this.board[1][1]==='O')&&(this.board[2][2]==='O')) {
-      if (this.p1x){
-        p2wins++;
-      }else if (this.p1o){
-        p1wins++;
-      }
-      this.playerWins();
-      return setTimeout(function(){
-  scope.winMessage('O');}, 300);
-    }else if ((this.board[0][2]==='O')&&(this.board[1][1]==='O')&&(this.board[2][0]==='O')) {
-      if (this.p1x){
-        p2wins++;
-      }else if (this.p1o){
-        p1wins++;
-      }
-      this.playerWins();
-      return setTimeout(function(){
-  scope.winMessage('O');}, 300);
-    }else if (this.moves===9){
+  var scope=this
+  if (this.moves<9){
+    this.getWinRow();
+    this.getWinCol();
+    this.getWinRDiag();
+    this.getWinLDiag();
+  }
+  if (this.moves===9&&this.getWinRow()&&this.getWinCol()&&this.getWinRDiag()&&this.getWinLDiag()){
       return setTimeout(function(){
         scope.winMessage();}, 300);
-    }
   }
+  // }
 }
 
 //play
@@ -436,7 +484,7 @@ Board.prototype.compAi=function compAi(){
 
 //window onload, for testing for now
 $(document).ready(function(){
-  var box = new Board(5)
+  var box = new Board(3)
   box.numPlayers();
   box.playerNames();
   box.playerWins();

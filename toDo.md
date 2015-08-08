@@ -1,7 +1,7 @@
 1)board wins
   //look through and fix the scrap.js function
 2) boards of infinite sizes
-  //render function's % on border classes
+  //render function's % on border classes - done
   //adds prompt window w/3 buttons, plus an input field
 3) better AI
   //play 2 win
