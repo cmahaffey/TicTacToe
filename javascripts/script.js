@@ -312,6 +312,9 @@ Board.prototype.teamChoice=function teamChoice(num){
     scope.p1x=false;
     scope.render(num);
   });
+  var prompter=$('<h2>').addClass('size pChoice')
+  prompter.text('Would you like to play as X or as O?')
+  this.game.append(prompter);
   this.game.append(playX);
   this.game.append(playO);
   $('#container').append(this.game)
@@ -481,8 +484,10 @@ Board.prototype.compAi=function compAi(){
 //board size selection
 Board.prototype.boardWidth=function boardWidth(players){
   $('center').remove();
-  var prompter=$('<h3>')
-  prompter.text()
+  var instructions=$('<h2>').addClass('size pChoice')
+  instructions.text('What size board would you like to play on?')
+  var prompter=$('<h2>').addClass('size pChoice')
+  prompter.text('Or did you have another size in mind?')
   var threex3=$('<button>').addClass('size');
   var fourx4=$('<button>').addClass('size');
   var fivex5=$('<button>').addClass('size');
@@ -529,9 +534,11 @@ Board.prototype.boardWidth=function boardWidth(players){
       scope.render();
     }
   });
+  this.game.append(instructions)
   this.game.append(threex3);
   this.game.append(fourx4);
   this.game.append(fivex5);
+  this.game.append(prompter);
   this.game.append(otherI);
   this.game.append(otherB);
   $('#container').append(this.game)

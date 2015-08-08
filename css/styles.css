@@ -29,7 +29,6 @@ body{
   width: 70%;
   height:40%;
   text-align: center;
-  font-size: 48px;
 }
 .board-row{
   display: block;
@@ -37,6 +36,7 @@ body{
   margin:-2px;
 }
 .square{
+  font-size: 48px;
   display: inline-block;
   /*color: black;*/
   height:51px;
