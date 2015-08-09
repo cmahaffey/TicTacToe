@@ -1,32 +1,157 @@
-function compAiSmallX(board){
-  console.log('i\'m x')
-  var moves=0;
-  if (moves>0&&moves<4){
+function compAiSmallX(board,moves){
+  var opponent = 'O'
+  var self = 'X'
+  console.log(moves)
+  if (moves>0&&moves<10){
+    //gave up on trying to be clever and decided to brute force it =_=
+    winCheck(self,opponent,board)
 
   }
   else{
-    addX(board,0,0)
+    addPiece(board,0,0,self)
   }
-  moves++;
 }
 
-function compAiSmallO(board){
+function compAiSmallO(board,moves){
 console.log('i\'m o')
-
+  var opponent = 'X'
+  var self = 'O'
+  winCheck(self,opponent,board)
 }
 
-function addX(board, col, row){
+function winCheck(self,opponent, board){
+  console.log('here')
+  //rowCheck
+  if ((board[0][0]===self)&&(board[0][1]===self)&&(board[0][2]==='E')){
+    addPiece(board,0,2,self);
+  }else if ((board[0][0]===self)&&(board[0][2]===self)&&(board[0][1]==='E')){
+    addPiece(board,0,1,self);
+  }else if ((board[0][1]===self)&&(board[0][2]===self)&&(board[0][0]==='E')){
+    addPiece(board,0,0,self);
+  }else if ((board[1][0]===self)&&(board[1][1]===self)&&(board[1][2]==='E')){
+    addPiece(board,1,2,self);
+  }else if ((board[1][0]===self)&&(board[1][2]===self)&&(board[1][1]==='E')){
+    addPiece(board,1,1,self);
+  }else if ((board[1][1]===self)&&(board[1][2]===self)&&(board[1][0]==='E')){
+    addPiece(board,1,0,self);
+  }else if ((board[2][0]===self)&&(board[2][1]===self)&&(board[2][2]==='E')){
+    addPiece(board,2,2,self);
+  }else if ((board[2][0]===self)&&(board[2][2]===self)&&(board[2][1]==='E')){
+    addPiece(board,2,1,self);
+  }else if ((board[2][1]===self)&&(board[2][2]===self)&&(board[2][0]==='E')){
+    addPiece(board,2,0,self);
+  //column check
+}else if ((board[0][0]===self)&&(board[1][0]===self)&&(board[2][0]==='E')){
+    addPiece(board,2,0,self);
+  }else if ((board[0][0]===self)&&(board[2][0]===self)&&(board[1][0]==='E')){
+    addPiece(board,1,0,self);
+  }else if ((board[1][0]===self)&&(board[2][0]===self)&&(board[0][0]==='E')){
+    addPiece(board,0,0,self);
+  }else if ((board[0][1]===self)&&(board[1][1]===self)&&(board[2][1]==='E')){
+    addPiece(board,2,1,self);
+  }else if ((board[0][1]===self)&&(board[2][1]===self)&&(board[1][1]==='E')){
+    addPiece(board,1,1,self);
+  }else if ((board[1][1]===self)&&(board[2][1]===self)&&(board[0][1]==='E')){
+    addPiece(board,0,1,self);
+  }else if ((board[0][2]===self)&&(board[1][2]===self)&&(board[2][2]==='E')){
+      addPiece(board,2,2,self);
+  }else if ((board[0][2]===self)&&(board[2][2]===self)&&(board[1][2]==='E')){
+      addPiece(board,1,2,self);
+  }else if ((board[1][2]===self)&&(board[2][2]===self)&&(board[0][2]==='E')){
+      addPiece(board,0,2,self);
+  // diagonal Check
+}else if ((board[0][0]===self)&&(board[1][1]===self)&&(board[2][2]==='E')){
+      addPiece(board,2,2,self);
+  }else if ((board[1][1]===self)&&(board[2][2]===self)&&(board[0][0]==='E')){
+      addPiece(board,0,0,self);
+  }else if ((board[0][0]===self)&&(board[2][2]===self)&&(board[1][1]==='E')){
+      addPiece(board,1,1,self);
+  }else if ((board[0][2]===self)&&(board[1][1]===self)&&(board[2][0]==='E')){
+      addPiece(board,2,0,self);
+  }else if ((board[1][1]===self)&&(board[2][0]===self)&&(board[0][2]==='E')){
+      addPiece(board,0,2,self);
+  }else if ((board[0][2]===self)&&(board[2][0]===self)&&(board[1][1]==='E')){
+      addPiece(board,1,1,self);
+  //check for opponent wins
+  }else{
+    blockCheck(self,opponent,board);
+  }
+}
+function blockCheck(self, opponent,board){
+  //rowCheck
+  if ((board[0][0]===opponent)&&(board[0][1]===opponent)&&(board[0][2]==='E')){
+    addPiece(board,0,2,self);
+  }else if ((board[0][0]===opponent)&&(board[0][2]===opponent)&&(board[0][1]==='E')){
+    addPiece(board,0,1,self);
+  }else if ((board[0][1]===opponent)&&(board[0][2]===opponent)&&(board[0][0]==='E')){
+    addPiece(board,0,0,self);
+  }else if ((board[1][0]===opponent)&&(board[1][1]===opponent)&&(board[1][2]==='E')){
+    addPiece(board,1,2,self);
+  }else if ((board[1][0]===opponent)&&(board[1][2]===opponent)&&(board[1][1]==='E')){
+    addPiece(board,1,1,self);
+  }else if ((board[1][1]===opponent)&&(board[1][2]===opponent)&&(board[1][0]==='E')){
+    addPiece(board,1,0,self);
+  }else if ((board[2][0]===opponent)&&(board[2][1]===opponent)&&(board[2][2]==='E')){
+    addPiece(board,2,2,self);
+  }else if ((board[2][0]===opponent)&&(board[2][2]===opponent)&&(board[2][1]==='E')){
+    addPiece(board,2,1,self);
+  }else if ((board[2][1]===opponent)&&(board[2][2]===opponent)&&(board[2][0]==='E')){
+    addPiece(board,2,0,self);
+  //column check
+}else if ((board[0][0]===opponent)&&(board[1][0]===opponent)&&(board[2][0]==='E')){
+    addPiece(board,2,0,self);
+  }else if ((board[0][0]===opponent)&&(board[2][0]===opponent)&&(board[1][0]==='E')){
+    addPiece(board,1,0,self);
+  }else if ((board[1][0]===opponent)&&(board[2][0]===opponent)&&(board[0][0]==='E')){
+    addPiece(board,0,0,self);
+  }else if ((board[0][1]===opponent)&&(board[1][1]===opponent)&&(board[2][1]==='E')){
+    addPiece(board,2,1,self);
+  }else if ((board[0][1]===opponent)&&(board[2][1]===opponent)&&(board[1][1]==='E')){
+    addPiece(board,1,1,self);
+  }else if ((board[1][1]===opponent)&&(board[2][1]===opponent)&&(board[0][1]==='E')){
+    addPiece(board,0,1,self);
+  }else if ((board[0][2]===opponent)&&(board[1][2]===opponent)&&(board[2][2]==='E')){
+      addPiece(board,2,2,self);
+  }else if ((board[0][2]===opponent)&&(board[2][2]===opponent)&&(board[1][2]==='E')){
+      addPiece(board,1,2,self);
+  }else if ((board[1][2]===opponent)&&(board[2][2]===opponent)&&(board[0][2]==='E')){
+      addPiece(board,0,2,self);
+  // diagonal Check
+}else if ((board[0][0]===opponent)&&(board[1][1]===opponent)&&(board[2][2]==='E')){
+      addPiece(board,2,2,self);
+  }else if ((board[1][1]===opponent)&&(board[2][2]===opponent)&&(board[0][0]==='E')){
+      addPiece(board,0,0,self);
+  }else if ((board[0][0]===opponent)&&(board[2][2]===opponent)&&(board[1][1]==='E')){
+      addPiece(board,1,1,self);
+  }else if ((board[0][2]===opponent)&&(board[1][1]===opponent)&&(board[2][0]==='E')){
+      addPiece(board,2,0,self);
+  }else if ((board[1][1]===opponent)&&(board[2][0]===opponent)&&(board[0][2]==='E')){
+      addPiece(board,0,2,self);
+  }else if ((board[0][2]===opponent)&&(board[2][0]===opponent)&&(board[1][1]==='E')){
+      addPiece(board,1,1,self);
+  //other moves
+  }else{
+    moves(self,opponent,board);
+  }
+}
+function moves(self,opponent, board){
+
+}
+function addPiece(board, col, row, self){
   var square;
-  board[col][row]="X";
+  board[col][row]=self;
   square=$("div").find("[col='"+col+"'][row='"+row+"']")
-  square.text('X');
+  square.text(self);
   square.css({color:'chartreuse'});
 }
 
-function addO(board, col, row){
-  var square;
-  board[col][row]="O";
-  square=$("div").find("[col='"+col+"'][row='"+row+"']")
-  square.text('O');
-  square.css({color:'chartreuse'});
-}
+//idea to simplify winCheck and other functions above, trashed
+// function rowCheck(board, ){
+//   if ((board[0][0]===self)&&(board[0][1]===self)){
+//     addPiece(board,0,0,self);
+//   }
+// }
+// function colCheck(board, move){
+//
+// }
+// function diagCheck(board){}

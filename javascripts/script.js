@@ -451,11 +451,11 @@ Board.prototype.compAi=function compAi(){
     this.compAiBig();
   }else{
     if (this.p1x){
-      compAiSmallO(this.board);
+      compAiSmallO(this.board,this.moves);
       this.xplays=true;
       this.oplays=false;
     }else if(this.p1o){
-      compAiSmallX(this.board);
+      compAiSmallX(this.board,this.moves);
       this.xplays=false;
       this.oplays=true;
     }
