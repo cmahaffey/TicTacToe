@@ -79,6 +79,7 @@ function winCheck(self,opponent, board){
 }
 function blockCheck(self, opponent,board){
   //rowCheck
+  console.log('blocking...')
   if ((board[0][0]===opponent)&&(board[0][1]===opponent)&&(board[0][2]==='E')){
     addPiece(board,0,2,self);
   }else if ((board[0][0]===opponent)&&(board[0][2]===opponent)&&(board[0][1]==='E')){
@@ -129,15 +130,51 @@ function blockCheck(self, opponent,board){
       addPiece(board,0,2,self);
   }else if ((board[0][2]===opponent)&&(board[2][0]===opponent)&&(board[1][1]==='E')){
       addPiece(board,1,1,self);
+  //the fork blockCheck
+  }else if ((board[0][0]===opponent)&&(board[2][2]===opponent)&&(board[0][1]==='E')){
+    addPiece(board,0,1,self);
+  }else if ((board[0][2]===opponent)&&(board[2][0]===opponent)&&(board[0][1]==='E')){
+    addPiece(board,0,1,self);
   //other moves
   }else{
-    moves(self,opponent,board);
+    console.log(self)
+    if (self==='O'){
+      console.log ('O is here')
+      movesO(self, board);
+    }else if (self=='X') {
+      movesX(self, board);
+    }
   }
 }
-function moves(self,opponent, board){
-
+function movesO(self, board){
+    console.log('moving')
+    if (board[1][1]==='E'){
+      addPiece(board,1,1,self);
+    }else if (board[0][0]==='E') {
+      addPiece(board,0,0,self);
+    }else if (board[2][2]==='E') {
+      addPiece(board,2,2,self);
+    }else if (board[2][0]==='E') {
+      addPiece(board,2,0,self);
+    }else if (board[0][2]==='E') {
+      addPiece(board,0,2,self);
+    }
+}
+function movesX(self, board){
+    if (board[0][0]==='E') {
+      addPiece(board,0,0,self);
+    }else if (board[2][2]==='E') {
+      addPiece(board,2,2,self);
+    }else if (board[2][0]==='E') {
+      addPiece(board,2,0,self);
+    }else if (board[0][2]==='E') {
+      addPiece(board,0,2,self);
+    }else if (board[1][1]==='E'){
+      addPiece(board,1,1,self);
+    }
 }
 function addPiece(board, col, row, self){
+  console.log('adding piece')
   var square;
   board[col][row]=self;
   square=$("div").find("[col='"+col+"'][row='"+row+"']")
