@@ -18,4 +18,4 @@ A game of TicTacToe to be played alone or with a friend. Allows for games to be 
 - CSS
 
 ## Known issues
-- When users input box sizes greater than 8, the formatting of the TicTacToe board becomes distorted.
+- When users input box sizes greater than 8, the formatting of the TicTacToe board becomes distorted. Currently boards larger than 8 default to 8.
