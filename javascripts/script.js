@@ -414,8 +414,10 @@ Board.prototype.winMessage= function winMessage(winner){
       scope.teamChoice();
     }
   });
-  this.game.append(announcement);
-  this.game.append(reset);
+  center=$("<center>")
+  center.append(announcement);
+  center.append(reset);
+  this.game.append(center);
 }
 
 //comp ai
@@ -472,10 +474,14 @@ Board.prototype.compAiBig=function compAiBig(){
 //board size selection
 Board.prototype.boardWidth=function boardWidth(){
   $('center').remove();
-  var instructions=$('<h2>').addClass('size pChoice')
-  instructions.text('What size board would you like to play on?')
-  var prompter=$('<h2>').addClass('size pChoice')
-  prompter.text('Or did you have another size in mind?')
+  var instructions=$('<h2>').addClass('size pChoice');
+  instructions.text('What size board would you like to play on?');
+  var prompter=$('<h2>').addClass('size pChoice');
+  prompter.text('Or did you have another size in mind?');
+  prompter.css({marginBottom:'0',paddingBottom:'0'})
+  var caveat=$('<p>').addClass('size pChoice');
+  caveat.text('(please pick a number between 3 and 8)')
+  caveat.css({fontSize:'10px',margin:'0',padding:'0'})
   var threex3=$('<button>').addClass('size');
   var fourx4=$('<button>').addClass('size');
   var fivex5=$('<button>').addClass('size');
@@ -513,10 +519,15 @@ Board.prototype.boardWidth=function boardWidth(){
   });
   otherB.on('click',function(){
     if (isNaN(otherI.val())){
+      //for invalid inputs
     }else{
-      if(otherI.val()==='1'){
-      }else{
+      if((Number(otherI.val())<=2)||(otherI.val()==='')){
+        //for inputs that are two small
+      }else if (Number(otherI.val())<9){
         scope.boardSize=otherI.val();
+      }else{
+        //deals with boards that can't fit on the screen
+        scope.boardSize=8
       }
     }
     if (scope.players===1){
@@ -533,6 +544,7 @@ Board.prototype.boardWidth=function boardWidth(){
   this.game.append(fourx4);
   this.game.append(fivex5);
   this.game.append(prompter);
+  this.game.append(caveat);
   this.game.append(center);
   $('#container').append(this.game)
 
