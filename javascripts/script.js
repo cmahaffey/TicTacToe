@@ -17,12 +17,12 @@ function Board(){
   this.p1o=false;
   this.boardSize=3
 }
-//ToDo: board setup
+// board setup
 Board.prototype.render = function render(){
   $('.size').remove();
   $('.choice').remove();
   $('.winrar').remove();
-  // console.log(this.board)
+
   for (var i=0;i<this.boardSize;i++){
     this.board.push([]);
     for(var j=0;j<this.boardSize;j++){
@@ -45,10 +45,8 @@ Board.prototype.render = function render(){
         col: squares,
         row: rows
       });
-      // index=[rows,squares]
       square.text(this.board[rows][squares]);
       square.css({color:'black'})
-
 
       //add classes for top, bottom, borders
       if (rows%this.board.length===0){
@@ -101,54 +99,40 @@ Board.prototype.render = function render(){
 Board.prototype.player1Input= function player1Input(square, index){
   if (this.board[index[0]][index[1]]==='E'){
   var scope=this;
-  // square.on('click',function(){
+
     square.text('X');
     square.css({color:'chartreuse'});
     this.board[index[0]][index[1]]='X'
     this.moves++;
-    // console.log(scope.board[index[0]][index[1]])
-    // console.log(scope);
 
-  // });
   // Flip through sides X and O
     if (this.players===2){
       this.xplays=false;
       this.oplays=true;
       this.getWin();}
     else{
-      //this.getWin();
       setTimeout(function(){
         scope.compAi()},500);
-      //this.compAi();
-      // aiFunction();
     }
-
   }
 }
 Board.prototype.player2Input=function player2Input(square, index){
   if (this.board[index[0]][index[1]]==='E'){
-  var scope=this;
-  // console.log(index);
-  // square.on('click',function(){
+    var scope=this;
+
     square.text('O');
     square.css({color:'chartreuse'});
     this.board[index[0]][index[1]]='O'
     this.moves++;
-    // console.log(scope.board[index[0]][index[1]])
-    // console.log(scope);
-    // this.getWin();
-  // });
+
   // Flip through sides X and O
     if (this.players===2){
       this.xplays=true;
       this.oplays=false;
       this.getWin();}
     else{
-      //this.getWin();
       setTimeout(function(){
         scope.compAi()},500);
-      //this.compAi();
-      //this.compAi();
     }
   }
 }
@@ -288,10 +272,7 @@ Board.prototype.getWin = function getWin(){
       return setTimeout(function(){
         scope.winMessage();}, 300);
   }
-  // }
 }
-
-//play
 
 //choosing x or o
 Board.prototype.teamChoice=function teamChoice(num){
@@ -329,7 +310,6 @@ Board.prototype.numPlayers= function numPlayers(){
   twoPlayer.text('2 player');
   var scope=this
   onePlayer.on('click',function(){
-    //same issue as name, jumps this and then goes to players=2
     scope.players=1;
     scope.insertName(1);
   });
@@ -348,21 +328,18 @@ Board.prototype.playerNames=function playerNames(){
   secondPlayer=$('<div>').addClass('player second');
   firstName=$('<h2>').attr('id','first-player');
   firstName.text('____________');
-  // firstScore=$('<h4>');
-  // firstScore.text('Wins: '+p1wins);
+
   secondName=$('<h2>').attr('id','second-player');;
   secondName.text('Computer');
-  // secondScore=$('<h4>');
-  // secondScore.text('Wins: '+p2wins);
+
   firstPlayer.append(firstName);
-  // firstPlayer.append(firstScore);
   secondPlayer.append(secondName);
-  // secondPlayer.append(secondScore);
+
   $('#container').append(firstPlayer);
   $('#container').append(secondPlayer);
 }
 Board.prototype.playerWins=function playerWins(){
-  // console.log(p1wins)
+
   $('h4').remove();
   firstScore=$('<h4>');
   firstScore.text('Wins: '+p1wins);
@@ -373,6 +350,7 @@ Board.prototype.playerWins=function playerWins(){
   $('#container').append(first);
   $('#container').append(second);
 }
+
 //allows player to insert a name
 Board.prototype.insertName=function insertName(){
   $('.players').remove();
@@ -382,7 +360,7 @@ Board.prototype.insertName=function insertName(){
   submit.text('submit');
   var nameRequest=$('<p>').addClass('name');
   var centering=$('<center>')
-  nameRequest.text("Please put in the player's name");
+  nameRequest.text("Please put in the your name");
   var scope=this
   if (this.players===1){
     submit.on('click',function(){
@@ -394,11 +372,7 @@ Board.prototype.insertName=function insertName(){
       inputs.push(input.val());
       $('#first-player').text(inputs[0]);
       input.val('')
-      // console.log($('#first-player'))
       submit.on('click',function(){
-        //doesn't show up
-        //instead replaces first h2
-        // console.log($('#second-player'))
         $('#second-player').text(inputs[1]);
         scope.boardWidth();
 
@@ -418,7 +392,7 @@ Board.prototype.winMessage= function winMessage(winner){
   this.oplays=false;
 
   $('.board-row').remove();//
-  announcement=$('<h3>').addClass('winrar');
+  announcement=$('<h1>').addClass('winrar');
   //add an if for the tie eventuality
   if ((winner==='O')||(winner==='X')){
     announcement.text(winner+' wins!');
@@ -440,10 +414,8 @@ Board.prototype.winMessage= function winMessage(winner){
       scope.teamChoice();
     }
   });
-  //adds twice for some reason
   this.game.append(announcement);
   this.game.append(reset);
-  //$('#container').append(this.game);
 }
 
 //comp ai
@@ -466,7 +438,7 @@ Board.prototype.compAi=function compAi(){
 }
 //for boards >3
 Board.prototype.compAiBig=function compAiBig(){
-  //console.log(this.moves)
+
   var autoSquare;
   var colIdx= Math.floor(Math.random()*this.board.length);
   var rowIdx= Math.floor(Math.random()*this.board.length);
@@ -474,7 +446,7 @@ Board.prototype.compAiBig=function compAiBig(){
     return this.getWin();
   }
   if (this.board[colIdx][rowIdx] === "E"){
-    // console.log('here')
+
     if (this.p1x){
       this.board[colIdx][rowIdx]="O";
       autoSquare=$("div").find("[col='" + colIdx + "'][row='" + rowIdx + "']")
@@ -489,13 +461,10 @@ Board.prototype.compAiBig=function compAiBig(){
       this.oplays=true;
     }
     autoSquare.css({color:'chartreuse'});
-    // console.log(colIdx+','+rowIdx)
-    // console.log(this)
     this.moves++
     this.getWin();
-    // console.log(this.moves)
+
   }else{
-    // console.log('but then here')
     this.compAiBig();
   }
 }
@@ -556,29 +525,27 @@ Board.prototype.boardWidth=function boardWidth(){
       scope.render();
     }
   });
+  center=$('<center>')
+  center.append(otherI);
+  center.append(otherB);
   this.game.append(instructions)
   this.game.append(threex3);
   this.game.append(fourx4);
   this.game.append(fivex5);
   this.game.append(prompter);
-  this.game.append(otherI);
-  this.game.append(otherB);
+  this.game.append(center);
   $('#container').append(this.game)
 
 }
 //play function
-Board.prototype.play=function play(num){
-
-}
-
-//window onload, for testing for now
-$(document).ready(function(){
+play=function play(){
   var box = new Board()
   box.numPlayers();
   box.playerNames();
   box.playerWins();
+}
 
-  //box.playerInput()
-  //box={board:[['R','R','R'],['R','R','R'],['R','R','R']]}
-  // getWin(box);
+//window onload, for testing for now
+$(document).ready(function(){
+  play();
 });
