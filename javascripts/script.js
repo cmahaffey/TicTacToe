@@ -373,7 +373,7 @@ Board.prototype.playerWins=function playerWins(){
   $('#container').append(second);
 }
 //allows player to insert a name
-Board.prototype.insertName=function insertName(players){
+Board.prototype.insertName=function insertName(){
   $('.players').remove();
   var inputs=[]
   var input=$('<input>').addClass('name');
@@ -383,12 +383,12 @@ Board.prototype.insertName=function insertName(players){
   var centering=$('<center>')
   nameRequest.text("Please put in the player's name");
   var scope=this
-  if (players===1){
+  if (this.players===1){
     submit.on('click',function(){
       $('.first h2').text(input.val());
-      scope.boardWidth(players);
+      scope.boardWidth();
     });
-  }else if (players===2) {
+  }else if (this.players===2) {
     submit.on('click',function(){
       inputs.push(input.val());
       $('#first-player').text(inputs[0]);
@@ -399,7 +399,7 @@ Board.prototype.insertName=function insertName(players){
         //instead replaces first h2
         // console.log($('#second-player'))
         $('#second-player').text(inputs[1]);
-        scope.boardWidth(players);
+        scope.boardWidth();
 
       });
     });
@@ -447,11 +447,29 @@ Board.prototype.winMessage= function winMessage(winner){
 
 //comp ai
 Board.prototype.compAi=function compAi(){
-  // console.log(this.moves)
+  if (this.boardSize>3){
+    this.compAiBig();
+  }else{
+    if (this.p1x){
+      compAiSmallO(this.board);
+      this.xplays=true;
+      this.oplays=false;
+    }else if(this.p1o){
+      compAiSmallX(this.board);
+      this.xplays=false;
+      this.oplays=true;
+    }
+    this.moves++
+    this.getWin();
+  }
+}
+//for boards >3
+Board.prototype.compAiBig=function compAiBig(){
+  //console.log(this.moves)
   var autoSquare;
   var colIdx= Math.floor(Math.random()*this.board.length);
   var rowIdx= Math.floor(Math.random()*this.board.length);
-  if (this.moves===9){
+  if (this.moves===Math.pow(this.boardSize,2)){
     return this.getWin();
   }
   if (this.board[colIdx][rowIdx] === "E"){
@@ -477,12 +495,12 @@ Board.prototype.compAi=function compAi(){
     // console.log(this.moves)
   }else{
     // console.log('but then here')
-    this.compAi();
+    this.compAiBig();
   }
 }
 
 //board size selection
-Board.prototype.boardWidth=function boardWidth(players){
+Board.prototype.boardWidth=function boardWidth(){
   $('center').remove();
   var instructions=$('<h2>').addClass('size pChoice')
   instructions.text('What size board would you like to play on?')
@@ -499,26 +517,26 @@ Board.prototype.boardWidth=function boardWidth(players){
   otherB.text(' Create!')
   var scope=this;
   threex3.on('click',function(){
-    if (players===1){
+    if (scope.players===1){
       scope.teamChoice();
-    }else if (players===2){
+    }else if (scope.players===2){
       scope.render();
     }
   });
   fourx4.on('click',function(){
-    if (players===1){
+    if (scope.players===1){
       scope.boardSize=4;
       scope.teamChoice();
-    }else if (players===2){
+    }else if (scope.players===2){
       scope.boardSize=4;
       scope.render();
     }
   });
   fivex5.on('click',function(){
-    if (players===1){
+    if (scope.players===1){
       scope.boardSize=5;
       scope.teamChoice();
-    }else if (players===2){
+    }else if (scope.players===2){
       scope.boardSize=5;
       scope.render();
     }
@@ -526,11 +544,14 @@ Board.prototype.boardWidth=function boardWidth(players){
   otherB.on('click',function(){
     if (isNaN(otherI.val())){
     }else{
-      scope.boardSize=otherI.val();
+      if(otherI.val()==='1'){
+      }else{
+        scope.boardSize=otherI.val();
+      }
     }
-    if (players===1){
+    if (scope.players===1){
       scope.teamChoice();
-    }else if (players===2){
+    }else if (scope.players===2){
       scope.render();
     }
   });
