@@ -283,7 +283,8 @@ Board.prototype.getWin = function getWin(){
     this.getWinRDiag();
     this.getWinLDiag();
   }
-  if (this.moves===Math.pow(this.board.length,2)&&this.getWinRow()&&this.getWinCol()&&this.getWinRDiag()&&this.getWinLDiag()){
+  if (this.moves>=Math.pow(this.board.length,2)
+  &&this.getWinRow()&&this.getWinCol()&&this.getWinRDiag()&&this.getWinLDiag()){
       return setTimeout(function(){
         scope.winMessage();}, 300);
   }
